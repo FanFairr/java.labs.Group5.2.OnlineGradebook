@@ -7,10 +7,11 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
-  <head>
-    <title>$Title$</title>
-  </head>
-  <body>
-  $END$
-  </body>
+<head>
+  <title>$Title$</title>
+</head>
+<body>
+  <h1 align="center">Greeting Traveler, click "Login" to go to the authorization page</h1>
+  <a href="/java_labs_Group5_2_OnlineGradebook_war_exploded/login" style="padding-left: 48%;"><button style="width: 150px; height: 50px;">Login</button> </a>
+</body>
 </html>
