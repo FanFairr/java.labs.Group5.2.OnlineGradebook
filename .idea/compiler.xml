@@ -10,7 +10,7 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="java.labs.Group5.2.OnlineGradebook" target="7" />
+      <module name="java.labs.Group5.2.OnlineGradebook" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>

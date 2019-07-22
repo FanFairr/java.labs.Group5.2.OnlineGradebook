@@ -1,20 +1,19 @@
 package controllers;
 
-import dao.DAOLogin;
+import dao.DAOPerson;
 import model.Person;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
-public class MainController {
+public class MainWindowController {
     @RequestMapping(value = "/hello", method=RequestMethod.GET)
     public ModelAndView sad() {
         ModelAndView modelAndView = new ModelAndView("helloWorld");
-        modelAndView.addObject("helloWorld", DAOLogin.viewAllInformation());
+        modelAndView.addObject("helloWorld", DAOPerson.viewAllInformation());
         return modelAndView;
     }
 
@@ -27,7 +26,7 @@ public class MainController {
 
     @RequestMapping(value = "/checkLogin", method = RequestMethod.POST)
     public ModelAndView checkLogin(@ModelAttribute("user") Person person) {
-        if (!DAOLogin.validateLogin(person)) {
+        if (!DAOPerson.validateLogin(person)) {
             ModelAndView modelAndView = new ModelAndView("login");
             modelAndView.addObject("user", new Person());
             modelAndView.addObject("validate", "invalid");
@@ -48,7 +47,7 @@ public class MainController {
 
     @RequestMapping(value = "/checkRegistration", method = RequestMethod.POST)
     public ModelAndView checkRegistration(@ModelAttribute("user") Person person) {
-        if (!DAOLogin.validateRegistration(person)) {
+        if (!DAOPerson.validateRegistration(person)) {
             ModelAndView modelAndView = new ModelAndView("registration");
             modelAndView.addObject("user", new Person());
             modelAndView.addObject("validate", "invalid");

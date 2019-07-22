@@ -2,6 +2,7 @@ package model;
 
 public class Person {
     private int id;
+    private String name;
     private String login;
     private String password;
     private String email;
@@ -9,8 +10,14 @@ public class Person {
     public Person() {
     }
 
-    public Person(int id, String login, String password, String email) {
+    public Person(int id, String name) {
         this.id = id;
+        this.name = name;
+    }
+
+    public Person(int id, String name, String login, String password, String email) {
+        this.id = id;
+        this.name = name;
         this.login = login;
         this.password = password;
         this.email = email;
@@ -20,6 +27,7 @@ public class Person {
     public String toString() {
         return "Person{" +
                 "id=" + id +
+                ", name='" + name + '\'' +
                 ", login='" + login + '\'' +
                 ", password='" + password + '\'' +
                 ", email='" + email + '\'' +
@@ -32,6 +40,14 @@ public class Person {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getLogin() {
