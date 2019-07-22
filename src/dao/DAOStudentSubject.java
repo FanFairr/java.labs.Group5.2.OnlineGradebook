@@ -55,7 +55,7 @@ public class DAOStudentSubject {
         return map;
     }
 
-    public static Map<Subject, List<Person>> viewSubjectTeacher() {
+    public static Map<Subject, List<Person>> viewSubjectStudent() {
         Map<Subject, List<Person>> map = new HashMap<>();
         List<Person> list = new LinkedList<>();
 
