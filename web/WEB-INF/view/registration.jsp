@@ -12,13 +12,13 @@
     <title>Registration</title>
 </head>
 <body>
-<spring:form modelAttribute="user" method="post" action="/java_labs_Group5_2_OnlineGradebook_war_exploded/checkRegistration" cssStyle="padding-left: 40%;">
+<spring:form modelAttribute="user" method="post" action="checkRegistration" cssStyle="padding-left: 40%;">
     <spring:input path="login"/><br/>
     <spring:password path="password"/><br/>
     <spring:input path="email"/><br/>
     ${validate}<br/>
     <spring:button>Check</spring:button>
 </spring:form>
-<a href="/java_labs_Group5_2_OnlineGradebook_war_exploded/login" style="padding-left: 40%;"><button>Login</button></a>
+<a href="login" style="padding-left: 40%;"><button>Login</button></a>
 </body>
 </html>

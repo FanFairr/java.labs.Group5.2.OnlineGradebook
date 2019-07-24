@@ -1,4 +1,4 @@
-<%--
+<%@ page import="model.Person" %><%--
   Created by IntelliJ IDEA.
   User: Drus
   Date: 18.07.2019
@@ -11,6 +11,8 @@
     <title>Hello friend</title>
 </head>
 <body>
-    ${validate}
+    <% Person person = (Person) request.getSession().getAttribute("user"); %>
+    Hello <%=person.getName()%> <br/>
+
 </body>
 </html>

@@ -16,7 +16,7 @@ public class DAOPerson {
         List<Person> personList = new LinkedList<>();
         try {
             DAOConnection.connect();
-            preparedStatement = DAOConnection.connection.prepareStatement("select * from login order by id");
+            preparedStatement = DAOConnection.connection.prepareStatement("select * from PERSON order by id");
             resultSet = preparedStatement.executeQuery();
 
             while (resultSet.next()) {
@@ -42,11 +42,13 @@ public class DAOPerson {
         boolean b = false;
         try {
             DAOConnection.connect();
-            preparedStatement = DAOConnection.connection.prepareStatement("select * from login where login = ? and PASSWORD = ?");
+            preparedStatement = DAOConnection.connection.prepareStatement("select NAME from PERSON where login = ? and PASSWORD = ?");
             preparedStatement.setString(1, person.getLogin());
             preparedStatement.setString(2, person.getPassword());
             resultSet = preparedStatement.executeQuery();
             b = resultSet.next();
+            if (b)
+                person.setName(resultSet.getString(1));
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
@@ -59,12 +61,12 @@ public class DAOPerson {
         boolean b = false;
         try {
             DAOConnection.connect();
-            preparedStatement = DAOConnection.connection.prepareStatement("select * from login where login = ?");
+            preparedStatement = DAOConnection.connection.prepareStatement("select * from PERSON where login = ?");
             preparedStatement.setString(1, person.getLogin());
             resultSet = preparedStatement.executeQuery();
             b = resultSet.next();
             if (!b) {
-                preparedStatement = DAOConnection.connection.prepareStatement("insert into login values(login_seq.nextval, ?, ?, ?)");
+                preparedStatement = DAOConnection.connection.prepareStatement("insert into PERSON values(login_seq.nextval, ?, ?, ?)");
                 preparedStatement.setString(1, person.getLogin());
                 preparedStatement.setString(2, person.getPassword());
                 preparedStatement.setString(3, person.getEmail());

@@ -6,9 +6,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
+@SessionAttributes("user")
 public class MainWindowController {
     @RequestMapping(value = "/hello", method=RequestMethod.GET)
     public ModelAndView sad() {
@@ -33,7 +35,7 @@ public class MainWindowController {
             return modelAndView;
         } else {
             ModelAndView modelAndView = new ModelAndView("helloWorld");
-            modelAndView.addObject("validate", "Hello " + person.getLogin());
+            modelAndView.addObject("user", person);
             return modelAndView;
         }
     }
