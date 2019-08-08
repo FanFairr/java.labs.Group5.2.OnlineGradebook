@@ -2,6 +2,8 @@ package model;
 
 import org.springframework.stereotype.Component;
 
+import java.util.Objects;
+
 @Component
 public class Person {
     private int id;
@@ -13,8 +15,7 @@ public class Person {
     public Person() {
     }
 
-    public Person(int id, String name) {
-        this.id = id;
+    public Person(String name) {
         this.name = name;
     }
 
@@ -24,6 +25,19 @@ public class Person {
         this.login = login;
         this.password = password;
         this.email = email;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Person person = (Person) o;
+        return Objects.equals(name, person.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, login, password, email);
     }
 
     @Override

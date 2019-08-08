@@ -8,7 +8,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -20,32 +19,16 @@ public class DAOTeacherSubject {
 
     public static Map<Person, List<Subject>> viewTeacherSubject() {
         Map<Person, List<Subject>> map = new HashMap<>();
-        List<Subject> list = new LinkedList<>();
 
         try {
             DAOConnection.connect();
             statement = DAOConnection.connection.createStatement();
-            resultSet = statement.executeQuery("SELECT P.ID_PERSON, P.NAME, S.SUBJECT_NAME, S.CONTENT FROM STUDENT_SUBJECT TS " +
+            resultSet = statement.executeQuery("SELECT P.NAME, S.SUBJECT_NAME, S.CONTENT FROM STUDENT_SUBJECT TS " +
                     "JOIN TEACHER T on TS.ID_PERSON = T.ID_PERSON " +
                     "JOIN PERSON P on T.ID_PERSON = P.ID_PERSON " +
                     "JOIN SUBJECT S on TS.ID_SUBJECT = S.ID_SUBJECT");
 
-            if (resultSet.next()) {
-                int id = resultSet.getInt(1);
-                list.add(new Subject(resultSet.getString(3), resultSet.getString(4)));
-
-                while (resultSet.next()) {
-                    int pattern = resultSet.getInt(1);
-
-                    if (id == pattern) {
-                        list.add(new Subject(resultSet.getString(3), resultSet.getString(4)));
-                    } else {
-                        map.put(new Person(id, resultSet.getString(2)), list);
-                        id = pattern;
-                        list = new LinkedList<>();
-                    }
-                }
-            }
+            DAOHelper.personSubject(map, resultSet);
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
@@ -57,7 +40,6 @@ public class DAOTeacherSubject {
 
     public static Map<Subject, List<Person>> viewSubjectTeacher() {
         Map<Subject, List<Person>> map = new HashMap<>();
-        List<Person> list = new LinkedList<>();
 
         try {
             DAOConnection.connect();
@@ -67,22 +49,7 @@ public class DAOTeacherSubject {
                     "JOIN PERSON P on T.ID_PERSON = P.ID_PERSON " +
                     "JOIN SUBJECT S on TS.ID_SUBJECT = S.ID_SUBJECT");
 
-            if (resultSet.next()) {
-                int id = resultSet.getInt(3);
-                list.add(new Person(resultSet.getInt(1), resultSet.getString(2)));
-
-                while (resultSet.next()) {
-                    int pattern = resultSet.getInt(3);
-
-                    if (id == pattern) {
-                        list.add(new Person(resultSet.getInt(1), resultSet.getString(2)));
-                    } else {
-                        map.put(new Subject(id, resultSet.getString(4), resultSet.getString(5)), list);
-                        id = pattern;
-                        list = new LinkedList<>();
-                    }
-                }
-            }
+            DAOHelper.subjectPerson(map, resultSet);
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
