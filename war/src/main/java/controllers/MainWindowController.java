@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
+import services.PersonService;
 
 @Controller
 @SessionAttributes("user")
@@ -28,7 +29,7 @@ public class MainWindowController {
 
     @RequestMapping(value = "/checkLogin", method = RequestMethod.POST)
     public ModelAndView checkLogin(@ModelAttribute("user") Person person) {
-        if (!DAOPerson.validateLogin(person)) {
+        if (!PersonService.validateLogin(person)) {
             ModelAndView modelAndView = new ModelAndView("login");
             modelAndView.addObject("user", new Person());
             modelAndView.addObject("validate", "invalid");
@@ -49,14 +50,14 @@ public class MainWindowController {
 
     @RequestMapping(value = "/checkRegistration", method = RequestMethod.POST)
     public ModelAndView checkRegistration(@ModelAttribute("user") Person person) {
-        if (!DAOPerson.validateRegistration(person)) {
+        if (!PersonService.validateRegistration(person)) {
             ModelAndView modelAndView = new ModelAndView("registration");
             modelAndView.addObject("user", new Person());
             modelAndView.addObject("validate", "invalid");
             return modelAndView;
         } else {
             ModelAndView modelAndView = new ModelAndView("helloWorld");
-            modelAndView.addObject("validate", "Hello " + person.getLogin());
+            modelAndView.addObject("validate", "Hello " + person.getName());
             return modelAndView;
         }
     }
