@@ -6,7 +6,15 @@
 
     <groupId>groupId</groupId>
     <artifactId>java.labs.Group5.2.OnlineGradebook</artifactId>
+    <packaging>pom</packaging>
     <version>1.0-SNAPSHOT</version>
+
+    <modules>
+        <module>db</module>
+        <module>war</module>
+        <module>ear</module>
+    </modules>
+
     <build>
         <plugins>
             <plugin>
@@ -20,6 +28,10 @@
         </plugins>
     </build>
 
+    <properties>
+        <spring.version>4.3.18.RELEASE</spring.version>
+    </properties>
+
     <dependencies>
 
         <dependency>
@@ -27,6 +39,29 @@
             <artifactId>javax.servlet-api</artifactId>
             <version>3.1.0</version>
             <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.springframework/spring-core -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-core</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.springframework/spring-web -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-web</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.springframework/spring-webmvc -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-webmvc</artifactId>
+            <version>${spring.version}</version>
         </dependency>
 
     </dependencies>

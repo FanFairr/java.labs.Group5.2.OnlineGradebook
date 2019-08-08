@@ -6,11 +6,16 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="java.labs.Group5.2.OnlineGradebook" />
+        <module name="db" />
+        <module name="ear" />
+        <module name="war" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="db" target="1.8" />
+      <module name="ear" target="1.8.0_152-release" />
       <module name="java.labs.Group5.2.OnlineGradebook" target="1.8" />
+      <module name="war" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>
