@@ -2,7 +2,9 @@ package controllers;
 
 import dao.DAOPerson;
 import model.Person;
+import org.springframework.session.web.http.CookieHttpSessionStrategy;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -11,33 +13,28 @@ import org.springframework.web.servlet.ModelAndView;
 import services.PersonService;
 
 @Controller
-@SessionAttributes("user")
-public class MainWindowController {
-    @RequestMapping(value = "/hello", method=RequestMethod.GET)
-    public ModelAndView sad() {
-        ModelAndView modelAndView = new ModelAndView("helloWorld");
-        modelAndView.addObject("helloWorld", DAOPerson.viewAllInformation());
-        return modelAndView;
-    }
+@SessionAttributes(value = "person")
+public class AuthorizationWindowController {
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
-    public ModelAndView login() {
+    public ModelAndView login(ModelMap model) {
         ModelAndView modelAndView = new ModelAndView("login");
         modelAndView.addObject("user", new Person());
         return modelAndView;
     }
 
     @RequestMapping(value = "/checkLogin", method = RequestMethod.POST)
-    public ModelAndView checkLogin(@ModelAttribute("user") Person person) {
+    public String checkLogin(@ModelAttribute("user") Person person, ModelMap model) {
         if (!PersonService.validateLogin(person)) {
             ModelAndView modelAndView = new ModelAndView("login");
             modelAndView.addObject("user", new Person());
             modelAndView.addObject("validate", "invalid");
-            return modelAndView;
+            return "login";
         } else {
-            ModelAndView modelAndView = new ModelAndView("helloWorld");
+            ModelAndView modelAndView = new ModelAndView("redirect:/mainPage");
             modelAndView.addObject("user", person);
-            return modelAndView;
+            model.put("person", person);
+            return "redirect:/mainPage";
         }
     }
 
@@ -49,15 +46,16 @@ public class MainWindowController {
     }
 
     @RequestMapping(value = "/checkRegistration", method = RequestMethod.POST)
-    public ModelAndView checkRegistration(@ModelAttribute("user") Person person) {
+    public ModelAndView checkRegistration(@ModelAttribute("user") Person person, ModelMap model) {
         if (!PersonService.validateRegistration(person)) {
             ModelAndView modelAndView = new ModelAndView("registration");
             modelAndView.addObject("user", new Person());
             modelAndView.addObject("validate", "invalid");
             return modelAndView;
         } else {
-            ModelAndView modelAndView = new ModelAndView("helloWorld");
+            ModelAndView modelAndView = new ModelAndView("redirect:/mainPage");
             modelAndView.addObject("validate", "Hello " + person.getName());
+            model.put("person", person);
             return modelAndView;
         }
     }

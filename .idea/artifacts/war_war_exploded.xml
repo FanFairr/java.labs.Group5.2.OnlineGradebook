@@ -19,6 +19,7 @@
           <element id="library" level="project" name="Maven: org.springframework:spring-web:4.3.18.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework:spring-webmvc:4.3.18.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework.security:spring-security-crypto:5.1.6.RELEASE" />
+          <element id="library" level="project" name="Maven: org.springframework.session:spring-session:1.0.0.RELEASE" />
         </element>
       </element>
       <element id="directory" name="META-INF">
