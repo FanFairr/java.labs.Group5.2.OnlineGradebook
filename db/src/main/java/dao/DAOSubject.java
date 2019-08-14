@@ -35,6 +35,24 @@ public class DAOSubject {
         return list;
     }
 
+    public static Subject viewSubject(int id) {
+        Subject subject = null;
+        try {
+            DAOConnection.connect();
+            preparedStatement = DAOConnection.connection.prepareStatement("select name, content from subject where ID_SUBJECT = ?");
+            preparedStatement.setInt(1, id);
+            resultSet = preparedStatement.executeQuery();
+
+            resultSet.next();
+            subject = new Subject(resultSet.getString(2), resultSet.getString(3));
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            DAOConnection.disconnect();
+        }
+        return subject;
+    }
+
     public static boolean insertNewSubject(Subject subject) {
         boolean b = false;
         try {

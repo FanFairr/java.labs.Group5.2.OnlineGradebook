@@ -10,8 +10,7 @@ public class Mark {
     public Mark() {
     }
 
-    public Mark(int id, String taskName, String studentName, String teacherName, double mark) {
-        this.id = id;
+    public Mark(String taskName, String studentName, String teacherName, double mark) {
         this.taskName = taskName;
         this.studentName = studentName;
         this.teacherName = teacherName;

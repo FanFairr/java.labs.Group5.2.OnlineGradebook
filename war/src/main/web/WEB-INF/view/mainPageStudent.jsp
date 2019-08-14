@@ -1,4 +1,7 @@
-<%@ page import="model.Person" %><%--
+<%@ page import="model.Person" %>
+<%@ page import="model.Subject" %>
+<%@ page import="java.util.Map" %>
+<%--
   Created by IntelliJ IDEA.
   User: Drus
   Date: 13.08.2019
@@ -9,13 +12,34 @@
 <html>
 <head>
     <title>Student Main Page</title>
+    <style><%@include file="css/mainPageStudent.css"%></style>
 </head>
 <body>
     <%
         Person person = (Person) request.getSession().getAttribute("person");
     %>
     <h1 align="center">Hello <%=person.getName()%></h1><br/>
-    <input type="button" value="Subject" class="button"/>
-    <input type="button" value="Marks" class="button"/>
+    <%
+        Map<Subject, String> subjects = (Map<Subject, String>) request.getAttribute("subjects");
+        Map<Subject, String> studentSubjects = (Map<Subject, String>) request.getAttribute("studentSubjects");
+
+        for (Subject subject : subjects.keySet()) {
+    %>      <a href="subject?id=<%=subject.getId()%>">
+                <div class="subjectDiv">
+                    Subject name - <%=subject.getName()%><br/>
+                    Content: <%=subject.getContent()%><br/>
+                    Teacher - <%=subjects.get(subject)%><br/>
+    <%
+                    if (studentSubjects.containsKey(subject)) {%>
+                        You are subscribed to this subject
+                    <% } else { %>
+                        You are not subscribed to this subject
+                    <% }
+    %>
+                </div>
+            </a>
+    <%
+        }
+    %>
 </body>
 </html>
