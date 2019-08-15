@@ -1,10 +1,10 @@
 package dao;
 
 import model.Mark;
+import model.Person;
 
 import java.sql.*;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 public class DAOMark {
 
@@ -40,31 +40,44 @@ public class DAOMark {
         return marks;
     }
 
-    public static List<Mark> viewMarks(int id) {
-        List<Mark> markList = new LinkedList<>();
+    public static Map<Person, List<Mark>> viewMarks(int id) {
+        Map<Person, List<Mark>> map = new HashMap<>();
         try {
             DAOConnection.connect();
-            preparedStatement = DAOConnection.connection.prepareStatement("select task.name, stud.name, teach.name, MARK_SCORE" +
-                    " from mark" +
-                    " join STUDENT on MARK.ID_STUDENT = STUDENT.ID_PERSON" +
-                    " join teacher on MARK.ID_TEACHER = TEACHER.ID_PERSON" +
+            preparedStatement = DAOConnection.connection.prepareStatement("select stud.ID_PERSON, stud.name, task.name, MARK_SCORE" +
+                    " from STUDENT" +
+                    " join MARK on MARK.ID_STUDENT = STUDENT.ID_PERSON" +
                     " join PERSON stud on STUDENT.ID_PERSON = stud.ID_PERSON" +
-                    " join PERSON teach on TEACHER.ID_PERSON = teach.ID_PERSON" +
                     " join task on MARK.TASK_ID = TASK.TASK_ID" +
-                    " where task.ID_SUBJECT = ?");
+                    " left join STUDENT_SUBJECT ss on STUDENT.ID_PERSON = ss.ID_PERSON" +
+                    " where ss.ID_SUBJECT = ?");
             preparedStatement.setInt(1, id);
             resultSet = preparedStatement.executeQuery();
 
-            while (resultSet.next()) {
-                markList.add(new Mark(resultSet.getString(1), resultSet.getString(2),
-                        resultSet.getString(3), resultSet.getDouble(4)));
+            if (resultSet.next()) {
+                map.put(new Person(resultSet.getInt(1), resultSet.getString(2)),
+                        new LinkedList<>(Collections.singletonList(
+                                new Mark(resultSet.getString(3), resultSet.getString(2),
+                                        resultSet.getDouble(4)))));
+
+                while (resultSet.next()) {
+                    Person person = new Person(resultSet.getInt(1), resultSet.getString(2));
+                    Mark mark = new Mark(resultSet.getString(3), resultSet.getString(2),
+                            resultSet.getDouble(4));
+
+                    if (map.containsKey(person)) {
+                        map.get(person).add(mark);
+                    } else {
+                        map.put(person, new LinkedList<>(Collections.singletonList(mark)));
+                    }
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
             DAOConnection.disconnect();
         }
-        return markList;
+        return map;
     }
 
     public static boolean insertNewMark(int taskId, int studentId, int teacherId, double mark) {

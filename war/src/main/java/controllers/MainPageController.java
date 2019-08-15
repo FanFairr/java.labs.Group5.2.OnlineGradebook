@@ -7,19 +7,29 @@ import org.springframework.web.servlet.ModelAndView;
 import services.MarkService;
 import services.StudentSubjectService;
 import services.SubjectService;
+import services.TaskService;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 @Controller
 @SessionAttributes(value = "person")
 public class MainPageController {
 
     private MarkService markService = new MarkService();
-    private SubjectService subjectService = new SubjectService();
     private StudentSubjectService studentSubjectService = new StudentSubjectService();
+    private TaskService taskService = new TaskService();
+
+    @ModelAttribute("person")
+    public Person createPerson(HttpSession session) {
+
+        return session.getAttribute("person") == null ? new Person() : (Person) session.getAttribute("person");
+    }
 
     @RequestMapping(value = "/mainPage", method = RequestMethod.GET)
     public ModelAndView viewMainPage(@ModelAttribute ("person") Person person) {
         ModelAndView modelAndView = new ModelAndView();
-        if ("createPerson_attributeSession".equals(person.getName())) {
+        if (person.equals(new Person())) {
             modelAndView.setViewName("redirect:/login");
             return modelAndView;
         }
@@ -46,8 +56,8 @@ public class MainPageController {
         }
 
         modelAndView.setViewName("subject");
-        modelAndView.addObject("subject", subjectService.viewSubject(id));
-        modelAndView.addObject("marks", markService.markList(id));
+        modelAndView.addObject("tasks", taskService.viewAllTask(id));
+        modelAndView.addObject("marks", markService.viewMarks(id));
         return modelAndView;
     }
 }

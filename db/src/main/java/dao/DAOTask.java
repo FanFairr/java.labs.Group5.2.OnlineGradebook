@@ -15,19 +15,21 @@ public class DAOTask {
     private static Statement statement;
     private static ResultSet resultSet;
 
-    public static List<Task> viewAllTask() {
+    public static List<Task> viewAllTask(int subjectId) {
         List<Task> list = new LinkedList<>();
         try {
             DAOConnection.connect();
-            statement = DAOConnection.connection.createStatement();
-            resultSet = statement.executeQuery("SELECT TASK_SEQ.nextval, (SELECT NAME FROM SUBJECT WHERE SUBJECT.ID_SUBJECT = TASK.ID_SUBJECT), NAME, CONTENT, MAX_MARK FROM TASK");
+            preparedStatement = DAOConnection.connection.prepareStatement(
+                    "SELECT (SELECT SUBJECT_NAME FROM SUBJECT WHERE SUBJECT.ID_SUBJECT = TASK.ID_SUBJECT), NAME, CONTENT, MAX_MARK " +
+                            "FROM TASK WHERE ID_SUBJECT = ?");
+            preparedStatement.setInt(1, subjectId);
+            resultSet = preparedStatement.executeQuery();
 
             while (resultSet.next()) {
-                list.add(new Task(resultSet.getInt(1),
+                list.add(new Task(resultSet.getString(1),
                         resultSet.getString(2),
                         resultSet.getString(3),
-                        resultSet.getString(4),
-                        resultSet.getDouble(5)));
+                        resultSet.getDouble(4)));
             }
         } catch (SQLException e) {
             e.printStackTrace();

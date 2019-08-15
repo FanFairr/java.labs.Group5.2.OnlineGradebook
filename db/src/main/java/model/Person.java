@@ -16,6 +16,11 @@ public class Person {
     public Person() {
     }
 
+    public Person(int id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
     public Person(String name) {
         this.name = name;
     }
@@ -33,7 +38,8 @@ public class Person {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Person person = (Person) o;
-        return Objects.equals(name, person.name);
+        return id == person.id &&
+                Objects.equals(name, person.name);
     }
 
     @Override

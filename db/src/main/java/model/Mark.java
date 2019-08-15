@@ -10,6 +10,12 @@ public class Mark {
     public Mark() {
     }
 
+    public Mark(String taskName, String studentName, double mark) {
+        this.taskName = taskName;
+        this.studentName = studentName;
+        this.mark = mark;
+    }
+
     public Mark(String taskName, String studentName, String teacherName, double mark) {
         this.taskName = taskName;
         this.studentName = studentName;
