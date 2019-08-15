@@ -9,4 +9,8 @@ public class TaskService {
     public List<Task> viewAllTask(int subjectId) {
         return DAOTask.viewAllTask(subjectId);
     }
+
+    public Task viewTask(int taskId) {
+        return DAOTask.viewTask(taskId);
+    }
 }

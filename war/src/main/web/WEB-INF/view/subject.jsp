@@ -27,7 +27,7 @@
             <tr>
                 <th>&nbsp;</th>
                 <%  for (Task task : tasks) { %>
-                        <th><a href=""><%=task.getName()%></a></th>
+                        <th><a href="task?id=<%=task.getId()%>"><%=task.getName()%></a></th>
                 <%  }                         %>
             </tr>
             <%  for (Person person : map.keySet()) { %>

@@ -50,6 +50,11 @@ public class MainPageController {
     @RequestMapping(value = "/subject")
     public ModelAndView viewStudentSubject(@ModelAttribute ("person") Person person, @RequestParam ("id") int id) {
         ModelAndView modelAndView = new ModelAndView();
+        if (person.equals(new Person())) {
+            modelAndView.setViewName("redirect:/login");
+            return modelAndView;
+        }
+
         if ("createPerson_attributeSession".equals(person.getName())) {
             modelAndView.setViewName("redirect:/login");
             return modelAndView;
@@ -58,6 +63,19 @@ public class MainPageController {
         modelAndView.setViewName("subject");
         modelAndView.addObject("tasks", taskService.viewAllTask(id));
         modelAndView.addObject("marks", markService.viewMarks(id));
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/task")
+    public ModelAndView viewTask(@ModelAttribute ("person") Person person, @RequestParam ("id") int id) {
+        ModelAndView modelAndView = new ModelAndView();
+        if (person.equals(new Person())) {
+            modelAndView.setViewName("redirect:/login");
+            return modelAndView;
+        }
+
+        modelAndView.setViewName("task");
+        modelAndView.addObject("task", taskService.viewTask(id));
         return modelAndView;
     }
 }

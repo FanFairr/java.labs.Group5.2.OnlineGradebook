@@ -44,13 +44,13 @@ public class DAOMark {
         Map<Person, List<Mark>> map = new HashMap<>();
         try {
             DAOConnection.connect();
-            preparedStatement = DAOConnection.connection.prepareStatement("select stud.ID_PERSON, stud.name, task.name, MARK_SCORE" +
-                    " from STUDENT" +
-                    " join MARK on MARK.ID_STUDENT = STUDENT.ID_PERSON" +
-                    " join PERSON stud on STUDENT.ID_PERSON = stud.ID_PERSON" +
-                    " join task on MARK.TASK_ID = TASK.TASK_ID" +
-                    " left join STUDENT_SUBJECT ss on STUDENT.ID_PERSON = ss.ID_PERSON" +
-                    " where ss.ID_SUBJECT = ?");
+            preparedStatement = DAOConnection.connection.prepareStatement("select stud.ID_PERSON, stud.name, task.name, MARK_SCORE\n" +
+                    "from STUDENT\n" +
+                    "  left join STUDENT_SUBJECT ss on STUDENT.ID_PERSON = ss.ID_PERSON\n" +
+                    "  join PERSON stud on STUDENT.ID_PERSON = stud.ID_PERSON\n" +
+                    "  left join MARK on MARK.ID_STUDENT = STUDENT.ID_PERSON\n" +
+                    "  left join task on MARK.TASK_ID = TASK.TASK_ID\n" +
+                    "where ss.ID_SUBJECT = ?");
             preparedStatement.setInt(1, id);
             resultSet = preparedStatement.executeQuery();
 

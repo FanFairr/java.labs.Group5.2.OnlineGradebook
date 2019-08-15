@@ -20,13 +20,14 @@ public class DAOTask {
         try {
             DAOConnection.connect();
             preparedStatement = DAOConnection.connection.prepareStatement(
-                    "SELECT (SELECT SUBJECT_NAME FROM SUBJECT WHERE SUBJECT.ID_SUBJECT = TASK.ID_SUBJECT), NAME, CONTENT, MAX_MARK " +
+                    "SELECT (SELECT SUBJECT_NAME FROM SUBJECT WHERE SUBJECT.ID_SUBJECT = TASK.ID_SUBJECT), NAME, CONTENT, MAX_MARK, TASK_ID " +
                             "FROM TASK WHERE ID_SUBJECT = ?");
             preparedStatement.setInt(1, subjectId);
             resultSet = preparedStatement.executeQuery();
 
             while (resultSet.next()) {
-                list.add(new Task(resultSet.getString(1),
+                list.add(new Task(Integer.parseInt(resultSet.getString(5)),
+                        resultSet.getString(1),
                         resultSet.getString(2),
                         resultSet.getString(3),
                         resultSet.getDouble(4)));
@@ -37,6 +38,26 @@ public class DAOTask {
             DAOConnection.disconnect();
         }
         return list;
+    }
+
+    public static Task viewTask(int taskId) {
+        Task task = new Task();
+        try {
+            DAOConnection.connect();
+            preparedStatement = DAOConnection.connection.prepareStatement("select name, content from task where TASK_ID = ?");
+            preparedStatement.setString(1, String.valueOf(taskId));
+
+            resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                task.setName(resultSet.getString(1));
+                task.setContent(resultSet.getString(2));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            DAOConnection.disconnect();
+        }
+        return task;
     }
 
     public static boolean insertNewTask(Task task) {
