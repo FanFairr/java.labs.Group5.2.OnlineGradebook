@@ -147,4 +147,26 @@ public class DAOStudentSubject {
 
         return b;
     }
+
+    public static boolean studentInfo(String studentLogin, int subjectId) {
+        boolean b = false;
+
+        try {
+            DAOConnection.connect();
+            preparedStatement = DAOConnection.connection.prepareStatement("select 1 from PERSON\n" +
+                    "join student on PERSON.ID_PERSON = STUDENT.ID_PERSON\n" +
+                    "join STUDENT_SUBJECT on STUDENT.ID_PERSON = STUDENT_SUBJECT.ID_PERSON\n" +
+                    "where login = ? and ID_SUBJECT = ?");
+            preparedStatement.setString(1, studentLogin);
+            preparedStatement.setInt(2, subjectId);
+            resultSet = preparedStatement.executeQuery();
+            b = resultSet.next();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            DAOConnection.disconnect();
+        }
+
+        return b;
+    }
 }

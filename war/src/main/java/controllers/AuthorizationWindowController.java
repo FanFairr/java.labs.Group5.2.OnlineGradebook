@@ -50,7 +50,7 @@ public class AuthorizationWindowController {
 
     @RequestMapping(value = "/checkRegistration", method = RequestMethod.POST)
     public ModelAndView checkRegistration(@ModelAttribute("user") Person person, ModelMap model) {
-        if (!PersonService.validateRegistration(person)) {
+        if (PersonService.validateRegistration(person)) {
             ModelAndView modelAndView = new ModelAndView("registration");
             modelAndView.addObject("user", new Person());
             modelAndView.addObject("validate", "invalid");

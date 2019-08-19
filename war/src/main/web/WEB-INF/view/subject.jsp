@@ -48,6 +48,18 @@
                   </tr>
             <% }                                     %>
         </table>
-    </div>
+    </div><br/>
+
+    <%
+        if ("student".equals(((Person) request.getSession().getAttribute("person")).getStatus())) {
+        boolean b = (boolean) request.getAttribute("studentInfo");
+    %>
+        <b><%=b ? "You are subscribed to this subject" : "You are not subscribed to this subject"%></b><br/>
+        <a href="subscribe?subjectId=<%=request.getAttribute("subjectId")%>
+            &studentId=<%=request.getAttribute("studentId")%>
+            &event=<%=b ? "delete" : "insert"%>">
+            <button><%=b ? "Unsubscribe" : "Subscribe"%></button>
+        </a>
+    <% } %>
 </body>
 </html>

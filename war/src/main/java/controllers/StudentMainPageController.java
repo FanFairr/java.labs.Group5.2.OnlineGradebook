@@ -4,32 +4,25 @@ import model.Person;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-import services.MarkService;
-import services.StudentSubjectService;
-import services.SubjectService;
-import services.TaskService;
+import services.*;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 @Controller
 @SessionAttributes(value = "person")
-public class MainPageController {
+public class StudentMainPageController {
 
     private MarkService markService = new MarkService();
-    private StudentSubjectService studentSubjectService = new StudentSubjectService();
     private TaskService taskService = new TaskService();
-
-    @ModelAttribute("person")
-    public Person createPerson(HttpSession session) {
-
-        return session.getAttribute("person") == null ? new Person() : (Person) session.getAttribute("person");
-    }
+    private StudentSubjectService studentSubjectService = new StudentSubjectService();
+    private TeacherSubjectService teacherSubjectService = new TeacherSubjectService();
+    private SubjectService subjectService = new SubjectService();
 
     @RequestMapping(value = "/mainPage", method = RequestMethod.GET)
-    public ModelAndView viewMainPage(@ModelAttribute ("person") Person person) {
+    public ModelAndView viewMainPage(HttpSession session) {
         ModelAndView modelAndView = new ModelAndView();
-        if (person.equals(new Person())) {
+        Person person = (Person) session.getAttribute("person");
+        if (person == null) {
             modelAndView.setViewName("redirect:/login");
             return modelAndView;
         }
@@ -40,6 +33,8 @@ public class MainPageController {
             return modelAndView;
         } else if ("teacher".equals(person.getStatus())) {
             modelAndView.setViewName("mainPageTeacher");
+            modelAndView.addObject("subjects", subjectService.viewAllSubject());
+            modelAndView.addObject("teacherSubjects", teacherSubjectService.teacherSubjectSet(person.getId()));
             return modelAndView;
         } else {
             modelAndView.setViewName("mainPageAdmin");
@@ -48,14 +43,10 @@ public class MainPageController {
     }
 
     @RequestMapping(value = "/subject")
-    public ModelAndView viewStudentSubject(@ModelAttribute ("person") Person person, @RequestParam ("id") int id) {
+    public ModelAndView viewStudentSubject(HttpSession session, @RequestParam (value = "id", required = false) int id) {
+        Person person = (Person) session.getAttribute("person");
         ModelAndView modelAndView = new ModelAndView();
-        if (person.equals(new Person())) {
-            modelAndView.setViewName("redirect:/login");
-            return modelAndView;
-        }
-
-        if ("createPerson_attributeSession".equals(person.getName())) {
+        if (person == null) {
             modelAndView.setViewName("redirect:/login");
             return modelAndView;
         }
@@ -63,13 +54,17 @@ public class MainPageController {
         modelAndView.setViewName("subject");
         modelAndView.addObject("tasks", taskService.viewAllTask(id));
         modelAndView.addObject("marks", markService.viewMarks(id));
+        modelAndView.addObject("studentInfo", studentSubjectService.studentInfo(person.getLogin(), id));
+        modelAndView.addObject("subjectId", id);
+        modelAndView.addObject("studentId", person.getId());
         return modelAndView;
     }
 
     @RequestMapping(value = "/task")
-    public ModelAndView viewTask(@ModelAttribute ("person") Person person, @RequestParam ("id") int id) {
+    public ModelAndView viewTask(HttpSession session, @RequestParam (value = "id", required = false) int id) {
+        Person person = (Person) session.getAttribute("person");
         ModelAndView modelAndView = new ModelAndView();
-        if (person.equals(new Person())) {
+        if (person == null) {
             modelAndView.setViewName("redirect:/login");
             return modelAndView;
         }
@@ -77,5 +72,21 @@ public class MainPageController {
         modelAndView.setViewName("task");
         modelAndView.addObject("task", taskService.viewTask(id));
         return modelAndView;
+    }
+
+    @RequestMapping(value = "/subscribe")
+    public String subsc(HttpSession session, @RequestParam (value = "subjectId", required = false) int subjectId,
+                        @RequestParam ("studentId") int studentId, @RequestParam ("event") String event) {
+        Person person = (Person) session.getAttribute("person");
+        if (person == null) {
+            return "redirect:/login";
+        }
+
+        if ("delete".equals(event)) {
+            studentSubjectService.deleteInfo(subjectId, studentId);
+        } else {
+            studentSubjectService.insertInfo(subjectId, studentId);
+        }
+        return "redirect:/mainPage";
     }
 }

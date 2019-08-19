@@ -44,7 +44,7 @@ public class DAOPerson {
         boolean b = false;
         try {
             DAOConnection.connect();
-            preparedStatement = DAOConnection.connection.prepareStatement("select NAME, STATUS, PASSWORD from PERSON where login = ?");
+            preparedStatement = DAOConnection.connection.prepareStatement("select NAME, STATUS, PASSWORD, ID_PERSON from PERSON where login = ?");
             preparedStatement.setString(1, person.getLogin());
             resultSet = preparedStatement.executeQuery();
             b = resultSet.next();
@@ -53,6 +53,7 @@ public class DAOPerson {
                 if (b) {
                     person.setName(resultSet.getString(1));
                     person.setStatus(resultSet.getString(2));
+                    person.setId(resultSet.getInt(4));
                 }
             }
         } catch (SQLException e) {
@@ -88,5 +89,55 @@ public class DAOPerson {
         return b;
     }
 
+    public static List<Person> selectAllStudents(int taskId) {
+        List<Person> personList = new LinkedList<>();
 
+        try {
+            DAOConnection.connect();
+            preparedStatement = DAOConnection.connection.prepareStatement("select PERSON.*\n" +
+                    "from task\n" +
+                    "      join SUBJECT on TASK.ID_SUBJECT = SUBJECT.ID_SUBJECT\n" +
+                    "      join STUDENT_SUBJECT on SUBJECT.ID_SUBJECT = STUDENT_SUBJECT.ID_SUBJECT\n" +
+                    "      join student on STUDENT_SUBJECT.ID_PERSON = STUDENT.ID_PERSON\n" +
+                    "      join person on STUDENT.ID_PERSON = PERSON.ID_PERSON\n" +
+                    "where task.TASK_ID = ?");
+            preparedStatement.setInt(1, taskId);
+            resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                personList.add(new Person(resultSet.getInt(1), resultSet.getString(2)));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            DAOConnection.disconnect();
+        }
+
+        return personList;
+    }
+
+    public static boolean personInfo(int personId, int taskId) {
+        boolean b = false;
+
+        try {
+            DAOConnection.connect();
+            preparedStatement = DAOConnection.connection.prepareStatement("select 1 from PERSON\n" +
+                    " join teacher on PERSON.ID_PERSON = TEACHER.ID_PERSON\n" +
+                    " join TEACHER_SUBJECT on TEACHER.ID_PERSON = TEACHER_SUBJECT.ID_PERSON\n" +
+                    " join subject on TEACHER_SUBJECT.ID_SUBJECT = SUBJECT.ID_SUBJECT\n" +
+                    " join task on SUBJECT.ID_SUBJECT = TASK.ID_SUBJECT\n" +
+                    "where TASK_ID = ? and PERSON.ID_PERSON = ?");
+            preparedStatement.setInt(1, personId);
+            preparedStatement.setInt(1, taskId);
+            resultSet = preparedStatement.executeQuery();
+
+            b = resultSet.next();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            DAOConnection.disconnect();
+        }
+
+        return b;
+    }
 }

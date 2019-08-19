@@ -7,9 +7,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class DAOTeacherSubject {
 
@@ -44,7 +42,7 @@ public class DAOTeacherSubject {
         try {
             DAOConnection.connect();
             statement = DAOConnection.connection.createStatement();
-            resultSet = statement.executeQuery("SELECT P.ID_PERSON, P.NAME, S.ID_SUBJECT, S.SUBJECT_NAME, S.CONTENT FROM STUDENT_SUBJECT TS " +
+            resultSet = statement.executeQuery("SELECT P.ID_PERSON, P.NAME, S.ID_SUBJECT, S.SUBJECT_NAME, S.CONTENT FROM TEACHER_SUBJECT TS " +
                     "JOIN TEACHER T on TS.ID_PERSON = T.ID_PERSON " +
                     "JOIN PERSON P on T.ID_PERSON = P.ID_PERSON " +
                     "JOIN SUBJECT S on TS.ID_SUBJECT = S.ID_SUBJECT");
@@ -57,6 +55,30 @@ public class DAOTeacherSubject {
         }
 
         return map;
+    }
+
+    public static Set<Subject> teacherSubjectSet(int teacherId) {
+        Set<Subject> set = new HashSet<>();
+
+        try {
+            DAOConnection.connect();
+            preparedStatement = DAOConnection.connection.prepareStatement("select s.id_subject, s.SUBJECT_NAME, s.CONTENT " +
+                    "from teacher_subject ts " +
+                    "join teacher t on t.ID_PERSON = ts.ID_PERSON " +
+                    "join subject s on ts.ID_SUBJECT = s.ID_SUBJECT " +
+                    "where t.ID_PERSON = ?");
+            preparedStatement.setInt(1, teacherId);
+            resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                set.add(new Subject(resultSet.getInt(1),
+                        resultSet.getString(2), resultSet.getString(3)));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return set;
     }
 
     public static boolean insertNewInfo(int teacherId, int subjectId) {

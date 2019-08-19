@@ -6,7 +6,7 @@ import java.util.Objects;
 
 @Component
 public class Person {
-    private int id;
+    private int personId;
     private String name;
     private String login;
     private String password;
@@ -16,8 +16,8 @@ public class Person {
     public Person() {
     }
 
-    public Person(int id, String name) {
-        this.id = id;
+    public Person(int personId, String name) {
+        this.personId = personId;
         this.name = name;
     }
 
@@ -25,8 +25,8 @@ public class Person {
         this.name = name;
     }
 
-    public Person(int id, String name, String login, String password, String email) {
-        this.id = id;
+    public Person(int personId, String name, String login, String password, String email) {
+        this.personId = personId;
         this.name = name;
         this.login = login;
         this.password = password;
@@ -38,19 +38,19 @@ public class Person {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Person person = (Person) o;
-        return id == person.id &&
+        return personId == person.personId &&
                 Objects.equals(name, person.name);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, login, password, email);
+        return Objects.hash(personId, name, login, password, email);
     }
 
     @Override
     public String toString() {
         return "Person{" +
-                "id=" + id +
+                "id=" + personId +
                 ", name='" + name + '\'' +
                 ", login='" + login + '\'' +
                 ", password='" + password + '\'' +
@@ -59,11 +59,11 @@ public class Person {
     }
 
     public int getId() {
-        return id;
+        return personId;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setId(int personId) {
+        this.personId = personId;
     }
 
     public String getName() {

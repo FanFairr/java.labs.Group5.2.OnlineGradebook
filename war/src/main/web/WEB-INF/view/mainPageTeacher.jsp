@@ -1,4 +1,7 @@
-<%--
+<%@ page import="model.Person" %>
+<%@ page import="model.Subject" %>
+<%@ page import="java.util.List" %>
+<%@ page import="java.util.Set" %><%--
   Created by IntelliJ IDEA.
   User: Drus
   Date: 13.08.2019
@@ -9,8 +12,32 @@
 <html>
 <head>
     <title>Main Page Teacher</title>
+    <style><%@include file="css/mainPageStudent.css"%></style>
 </head>
 <body>
+    <% Person person = (Person) request.getSession().getAttribute("person"); %>
+    <h1 align="center">Hello <%=person.getName()%></h1><br/>
 
+    <%
+        List<Subject> subjects = (List<Subject>) request.getAttribute("subjects");
+        Set<Subject> teacherSubjects = (Set<Subject>) request.getAttribute("teacherSubjects");
+
+        for (Subject subject : subjects) {
+    %>      <a href="teacherSubject?id=<%=subject.getId()%>">
+                <div class="subjectDiv">
+                    Subject name - <%=subject.getName()%><br/>
+                    Content: <%=subject.getContent()%><br/>
+                    <%
+                        if (teacherSubjects.contains(subject)) {%>
+                            You're a lecturer in this subject.
+                        <% } else { %>
+                            You're not a lecturer in this subject.
+                        <% }
+                    %>
+                </div>
+            </a>
+    <%
+        }
+    %>
 </body>
 </html>
