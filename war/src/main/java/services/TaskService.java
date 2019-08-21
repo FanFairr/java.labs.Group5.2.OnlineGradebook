@@ -13,4 +13,8 @@ public class TaskService {
     public Task viewTask(int taskId) {
         return DAOTask.viewTask(taskId);
     }
+
+    public int subjectId(int taskId) {
+        return DAOTask.subjectId(taskId);
+    }
 }

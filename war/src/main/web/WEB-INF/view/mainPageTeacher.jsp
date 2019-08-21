@@ -23,7 +23,7 @@
         Set<Subject> teacherSubjects = (Set<Subject>) request.getAttribute("teacherSubjects");
 
         for (Subject subject : subjects) {
-    %>      <a href="teacherSubject?id=<%=subject.getId()%>">
+    %>      <a href="subject?id=<%=subject.getId()%>">
                 <div class="subjectDiv">
                     Subject name - <%=subject.getName()%><br/>
                     Content: <%=subject.getContent()%><br/>
@@ -39,5 +39,6 @@
     <%
         }
     %>
+    <br/><%=request.getAttribute("markInfo") != null ? request.getAttribute("markInfo") : ""%>
 </body>
 </html>

@@ -44,13 +44,15 @@ public class DAOTask {
         Task task = new Task();
         try {
             DAOConnection.connect();
-            preparedStatement = DAOConnection.connection.prepareStatement("select name, content from task where TASK_ID = ?");
+            preparedStatement = DAOConnection.connection.prepareStatement("select name, content, MAX_MARK from task where TASK_ID = ?");
             preparedStatement.setString(1, String.valueOf(taskId));
 
             resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
+                task.setId(taskId);
                 task.setName(resultSet.getString(1));
                 task.setContent(resultSet.getString(2));
+                task.setMax_mark(resultSet.getDouble(3));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -77,5 +79,25 @@ public class DAOTask {
             DAOConnection.disconnect();
         }
         return b;
+    }
+
+    public static int subjectId(int taskId) {
+        int subjectId = 0;
+
+        try {
+            DAOConnection.connect();
+            preparedStatement = DAOConnection.connection.prepareStatement("select ID_SUBJECT from task where TASK_ID = ?");
+            preparedStatement.setInt(1, taskId);
+            resultSet = preparedStatement.executeQuery();
+
+            resultSet.next();
+            subjectId = resultSet.getInt(1);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            DAOConnection.disconnect();
+        }
+
+        return subjectId;
     }
 }

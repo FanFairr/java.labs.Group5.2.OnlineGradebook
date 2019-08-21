@@ -127,8 +127,8 @@ public class DAOPerson {
                     " join subject on TEACHER_SUBJECT.ID_SUBJECT = SUBJECT.ID_SUBJECT\n" +
                     " join task on SUBJECT.ID_SUBJECT = TASK.ID_SUBJECT\n" +
                     "where TASK_ID = ? and PERSON.ID_PERSON = ?");
-            preparedStatement.setInt(1, personId);
             preparedStatement.setInt(1, taskId);
+            preparedStatement.setInt(2, personId);
             resultSet = preparedStatement.executeQuery();
 
             b = resultSet.next();

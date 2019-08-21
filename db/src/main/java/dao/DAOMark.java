@@ -80,7 +80,7 @@ public class DAOMark {
         return map;
     }
 
-    public static boolean insertNewMark(int taskId, int studentId, int teacherId, double mark) {
+    private static boolean insertNewMark(int taskId, int studentId, int teacherId, double mark) {
         boolean bool = false;
         try {
             DAOConnection.connect();
@@ -96,6 +96,33 @@ public class DAOMark {
             DAOConnection.disconnect();
         }
         return bool;
+    }
+
+    public static boolean updateMark(int taskId, int studentId, int teacherId, double mark) {
+        boolean b = false;
+        try {
+            DAOConnection.connect();
+            preparedStatement = DAOConnection.connection.prepareStatement("select 1 from mark where TASK_ID = ? and ID_STUDENT = ? and ID_TEACHER = ?");
+            preparedStatement.setInt(1, taskId);
+            preparedStatement.setInt(2, studentId);
+            preparedStatement.setInt(3, teacherId);
+            resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                preparedStatement = DAOConnection.connection.prepareStatement("update mark set mark_score = ? " +
+                        "where TASK_ID = ? and ID_STUDENT = ? and ID_TEACHER = ?");
+                preparedStatement.setDouble(1, mark);
+                preparedStatement.setInt(2, taskId);
+                preparedStatement.setInt(3, studentId);
+                preparedStatement.setInt(4, teacherId);
+                b = preparedStatement.execute();
+            } else
+                b = insertNewMark(taskId, studentId, teacherId, mark);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            DAOConnection.disconnect();
+        }
+        return b;
     }
 
     public static boolean deleteMark(int markId) {
