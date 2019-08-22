@@ -27,4 +27,12 @@ public class PersonService {
     public boolean personInfo(int personId, int taskId) {
         return DAOPerson.personInfo(personId, taskId);
     }
+
+    public List<Person> viewAllStudent() {
+        return DAOPerson.viewAllStudents();
+    }
+
+    public List<Person> viewAllTeachers() {
+        return DAOPerson.viewAllTeachers();
+    }
 }

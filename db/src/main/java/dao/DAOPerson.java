@@ -140,4 +140,71 @@ public class DAOPerson {
 
         return b;
     }
+
+    public static List<Person> viewAllStudents() {
+        List<Person> list = new LinkedList<>();
+        try {
+            DAOConnection.connect();
+            statement = DAOConnection.connection.createStatement();
+            resultSet = statement.executeQuery("select id_person, name from person where STATUS = 'student'");
+            while (resultSet.next()) {
+                list.add(new Person(resultSet.getInt(1), resultSet.getString(2)));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            DAOConnection.disconnect();
+        }
+        return list;
+    }
+
+    public static void updateStudent(int studentId) {
+        try {
+            DAOConnection.connect();
+            preparedStatement = DAOConnection.connection.prepareStatement("update person set STATUS = 'teacher' where ID_PERSON = ?");
+            preparedStatement.setInt(1, studentId);
+            preparedStatement.execute();
+
+            preparedStatement = DAOConnection.connection.prepareStatement("update person1 set STATUS = 'teacher' where ID_PERSON = ?");
+            preparedStatement.setInt(1, studentId);
+            preparedStatement.execute();
+
+            preparedStatement = DAOConnection.connection.prepareStatement("delete from student where ID_PERSON = ?");
+            preparedStatement.setInt(1, studentId);
+            preparedStatement.execute();
+
+            preparedStatement = DAOConnection.connection.prepareStatement("insert into teacher values (?)");
+            preparedStatement.setInt(1, studentId);
+            preparedStatement.execute();
+
+            preparedStatement = DAOConnection.connection.prepareStatement("delete from STUDENT_SUBJECT where ID_PERSON = ?");
+            preparedStatement.setInt(1, studentId);
+            preparedStatement.execute();
+
+            preparedStatement = DAOConnection.connection.prepareStatement("delete from MARK where ID_STUDENT = ?");
+            preparedStatement.setInt(1, studentId);
+            preparedStatement.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            DAOConnection.disconnect();
+        }
+    }
+
+    public static List<Person> viewAllTeachers() {
+        List<Person> list = new LinkedList<>();
+        try {
+            DAOConnection.connect();
+            statement = DAOConnection.connection.createStatement();
+            resultSet = statement.executeQuery("select id_person, name from person where STATUS = 'teacher'");
+            while (resultSet.next()) {
+                list.add(new Person(resultSet.getInt(1), resultSet.getString(2)));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            DAOConnection.disconnect();
+        }
+        return list;
+    }
 }
