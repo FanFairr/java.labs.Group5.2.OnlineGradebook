@@ -13,12 +13,18 @@
 <head>
     <title>Student Main Page</title>
     <style><%@include file="css/mainPageStudent.css"%></style>
+    <script>
+        function logout() {
+            document.location.href = "logout";
+        }
+    </script>
 </head>
 <body>
     <%
         Person person = (Person) request.getSession().getAttribute("person");
     %>
-    <h1 align="center">Hello <%=person.getName()%></h1><br/>
+    <h1 align="center">Hello <%=person.getName()%></h1>
+    <input type="button" value="Logout" onclick="logout()"><br/>
     <%
         Map<Subject, String> subjects = (Map<Subject, String>) request.getAttribute("subjects");
         Map<Subject, String> studentSubjects = (Map<Subject, String>) request.getAttribute("studentSubjects");

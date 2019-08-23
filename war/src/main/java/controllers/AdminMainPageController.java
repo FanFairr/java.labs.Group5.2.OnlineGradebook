@@ -40,10 +40,12 @@ public class AdminMainPageController {
     }
 
     @RequestMapping(value = "newTeacher")
-    public String newTeacher(HttpSession session, @RequestParam(value = "studentId") int studentId) {
+    public String newTeacher(HttpSession session, @RequestParam(value = "studentId", defaultValue = "0") int studentId) {
         Person person = (Person) session.getAttribute("person");
         if (person == null) {
             return "redirect:/login";
+        } else if (studentId <= 0) {
+            return "redirect:/mainPage";
         }
 
         DAOPerson.updateStudent(studentId);
@@ -67,11 +69,13 @@ public class AdminMainPageController {
     }
 
     @RequestMapping(value = "newTeacherForSubject")
-    public String newTeacherForSubject(HttpSession session, @RequestParam(value = "teacherId") int teacherId,
-                                       @RequestParam(value = "subjectId") int subjectId) {
+    public String newTeacherForSubject(HttpSession session, @RequestParam(value = "teacherId", defaultValue = "0") int teacherId,
+                                       @RequestParam(value = "subjectId", defaultValue = "0") int subjectId) {
         Person person = (Person) session.getAttribute("person");
         if (person == null) {
             return "redirect:/login";
+        } else if (teacherId <= 0 || subjectId <= 0) {
+            return "redirect:/mainPage";
         }
 
         DAOTeacherSubject.insertNewInfo(teacherId, subjectId);
@@ -93,11 +97,13 @@ public class AdminMainPageController {
     }
 
     @RequestMapping(value = "newSubject")
-    public String newSubject(HttpSession session, @RequestParam(value = "subjectName") String subjectName,
-                                       @RequestParam(value = "subjectContent") String subjectContent) {
+    public String newSubject(HttpSession session, @RequestParam(value = "subjectName", defaultValue = "") String subjectName,
+                                       @RequestParam(value = "subjectContent", defaultValue = "") String subjectContent) {
         Person person = (Person) session.getAttribute("person");
         if (person == null) {
             return "redirect:/login";
+        } else if ("".equals(subjectName) || "".equals(subjectContent)) {
+            return "redirect:mainPage";
         }
 
         DAOSubject.insertNewSubject(new Subject(subjectName, subjectContent));
@@ -120,12 +126,16 @@ public class AdminMainPageController {
     }
 
     @RequestMapping(value = "newTask")
-    public String newTask(HttpSession session, @RequestParam(value = "subjectName") String subjectName,
-                          @RequestParam(value = "taskName") String taskName, @RequestParam(value = "taskContent") String taskContent,
-                          @RequestParam(value = "maxMark") double maxMark) {
+    public String newTask(HttpSession session,
+                          @RequestParam(value = "subjectName", defaultValue = "") String subjectName,
+                          @RequestParam(value = "taskName", defaultValue = "") String taskName,
+                          @RequestParam(value = "taskContent", defaultValue = "") String taskContent,
+                          @RequestParam(value = "maxMark", defaultValue = "0") double maxMark) {
         Person person = (Person) session.getAttribute("person");
         if (person == null) {
             return "redirect:/login";
+        } else if ("".equals(subjectName) || "".equals(taskName) || "".equals(taskContent) || maxMark <= 0) {
+            return "redirect:/mainPage";
         }
 
         DAOTask.insertNewTask(new Task(subjectName, taskName, taskContent, maxMark));

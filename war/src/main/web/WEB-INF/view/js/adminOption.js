@@ -32,3 +32,7 @@ function newTask() {
     document.location.href = "newTask?subjectName=" + subjectName
         + "&taskName=" + taskName + "&taskContent=" + taskContent + "&maxMark=" + maxMark;
 }
+
+function logout() {
+    document.location.href = "logout";
+}

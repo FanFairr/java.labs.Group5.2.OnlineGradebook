@@ -24,11 +24,14 @@ public class TeacherMainPageController {
     private PersonService personService = new PersonService();
 
     @RequestMapping(value = "/teacherTask")
-    public ModelAndView teacherTask(HttpSession session, @RequestParam(value = "id") int id) {
+    public ModelAndView teacherTask(HttpSession session, @RequestParam(value = "id", defaultValue = "0") int id) {
         Person person = (Person) session.getAttribute("person");
         ModelAndView modelAndView = new ModelAndView();
         if (person == null) {
             modelAndView.setViewName("redirect:/login");
+            return modelAndView;
+        } else if (id <= 0) {
+            modelAndView.setViewName("redirect:/mainPage");
             return modelAndView;
         }
 
@@ -40,13 +43,17 @@ public class TeacherMainPageController {
     }
 
     @RequestMapping(value = "mark")
-    public ModelAndView teacherMark(HttpSession session, @RequestParam(value = "studentId") int studentId,
-                                    @RequestParam(value = "mark") double mark, @RequestParam(value = "teacherId") int teacherId,
-                                    @RequestParam(value = "taskId") int taskId) {
+    public ModelAndView teacherMark(HttpSession session, @RequestParam(value = "studentId", defaultValue = "0") int studentId,
+                                    @RequestParam(value = "mark", defaultValue = "0") double mark,
+                                    @RequestParam(value = "teacherId", defaultValue = "0") int teacherId,
+                                    @RequestParam(value = "taskId", defaultValue = "0") int taskId) {
         Person person = (Person) session.getAttribute("person");
         ModelAndView modelAndView = new ModelAndView();
         if (person == null) {
             modelAndView.setViewName("redirect:/login");
+            return modelAndView;
+        } else if (studentId <= 0 || mark <= 0 || teacherId <= 0 || taskId <= 0) {
+            modelAndView.setViewName("redirect:/mainPage");
             return modelAndView;
         }
 

@@ -25,6 +25,13 @@ public class Person {
         this.name = name;
     }
 
+    public Person(String name, String login, String password, String email) {
+        this.name = name;
+        this.login = login;
+        this.password = password;
+        this.email = email;
+    }
+
     public Person(int personId, String name, String login, String password, String email) {
         this.personId = personId;
         this.name = name;

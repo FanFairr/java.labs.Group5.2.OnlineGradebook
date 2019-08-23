@@ -13,10 +13,16 @@
 <head>
     <title>Main Page Teacher</title>
     <style><%@include file="css/mainPageStudent.css"%></style>
+    <script>
+        function logout() {
+            document.location.href = "logout";
+        }
+    </script>
 </head>
 <body>
     <% Person person = (Person) request.getSession().getAttribute("person"); %>
-    <h1 align="center">Hello <%=person.getName()%></h1><br/>
+    <h1 align="center">Hello <%=person.getName()%></h1>
+    <input type="button" value="Logout" onclick="logout()"><br/>
 
     <%
         List<Subject> subjects = (List<Subject>) request.getAttribute("subjects");

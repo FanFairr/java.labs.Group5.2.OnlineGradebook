@@ -10,16 +10,17 @@
 <html>
 <head>
     <title>Registration</title>
+    <script><%@include file="js/registration.js"%></script>
 </head>
 <body>
-<spring:form modelAttribute="user" method="post" action="checkRegistration" cssStyle="padding-left: 40%;">
-    Login: <spring:input path="login"/><br/>
-    Password: <spring:password path="password"/><br/>
-    Name: <spring:input path="name"/><br/>
-    Email: <spring:input path="email"/><br/>
+<div style="padding-left: 40%;">
+    Login: <input type="text" id="login"/><br/>
+    Password: <input type="password" id="password"/><br/>
+    Name: <input type="text" id="name"/><br/>
+    Email: <input type="text" id="email"/><br/>
     ${validate}<br/>
-    <spring:button>Check</spring:button>
-</spring:form>
+    <input type="button" onclick="reg()" value="Check"/>
+</div>
 <a href="login" style="padding-left: 40%;"><button>Login</button></a>
 </body>
 </html>

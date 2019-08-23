@@ -11,13 +11,19 @@
     <title>Admin Main Page</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
     <script type="text/javascript" src="http://code.jquery.com/jquery.js"></script>
+    <script>
+        function logout() {
+            document.location.href = "logout";
+        }
+    </script>
 
 </head>
 <body>
     <% Person person = (Person) request.getSession().getAttribute("person");%>
-    <h1 align="center">Hello <%=person.getName()%></h1><br/>
+    <h1 align="center">Hello <%=person.getName()%></h1>
+    <input type="button" value="Logout" onclick="logout()"><br/>
     <form>
-        <input type="button" value="Add Teacher" id="btn1" style="margin-left: 15%;" onclick="btn1()">
+        <input type="button" value="Add Teacher" id="btn1" style="margin-left: 15%;">
         <input type="button" value="Add subject for teacher" id="btn2" style="margin-left: 15%;">
         <input type="button" value="Add subject" id="btn3" style="margin-left: 15%;">
         <input type="button" value="Add task" id="btn4" style="margin-left: 15%;">

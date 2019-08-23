@@ -43,29 +43,35 @@ public class StudentMainPageController {
     }
 
     @RequestMapping(value = "/subject")
-    public ModelAndView viewStudentSubject(HttpSession session, @RequestParam (value = "id", required = false) int id) {
+    public ModelAndView viewStudentSubject(HttpSession session, @RequestParam (value = "id", defaultValue = "0") int subjectId) {
         Person person = (Person) session.getAttribute("person");
         ModelAndView modelAndView = new ModelAndView();
         if (person == null) {
             modelAndView.setViewName("redirect:/login");
             return modelAndView;
+        } else if (subjectId <= 0) {
+            modelAndView.setViewName("redirect:/mainPage");
+            return modelAndView;
         }
 
         modelAndView.setViewName("subject");
-        modelAndView.addObject("tasks", taskService.viewAllTask(id));
-        modelAndView.addObject("marks", markService.viewMarks(id));
-        modelAndView.addObject("studentInfo", studentSubjectService.studentInfo(person.getLogin(), id));
-        modelAndView.addObject("subjectId", id);
+        modelAndView.addObject("tasks", taskService.viewAllTask(subjectId));
+        modelAndView.addObject("marks", markService.viewMarks(subjectId));
+        modelAndView.addObject("studentInfo", studentSubjectService.studentInfo(person.getLogin(), subjectId));
+        modelAndView.addObject("subjectId", subjectId);
         modelAndView.addObject("studentId", person.getId());
         return modelAndView;
     }
 
     @RequestMapping(value = "/task")
-    public ModelAndView viewTask(HttpSession session, @RequestParam (value = "id", required = false) int id) {
+    public ModelAndView viewTask(HttpSession session, @RequestParam (value = "id", defaultValue = "0") int id) {
         Person person = (Person) session.getAttribute("person");
         ModelAndView modelAndView = new ModelAndView();
         if (person == null) {
             modelAndView.setViewName("redirect:/login");
+            return modelAndView;
+        } else if (id <= 0) {
+            modelAndView.setViewName("redirect:/mainPage");
             return modelAndView;
         }
 
@@ -75,11 +81,14 @@ public class StudentMainPageController {
     }
 
     @RequestMapping(value = "/subscribe")
-    public String subsc(HttpSession session, @RequestParam (value = "subjectId", required = false) int subjectId,
-                        @RequestParam ("studentId") int studentId, @RequestParam ("event") String event) {
+    public String subsc(HttpSession session, @RequestParam (value = "subjectId", defaultValue = "0") int subjectId,
+                        @RequestParam (value = "studentId", defaultValue = "0") int studentId,
+                        @RequestParam (value = "event", defaultValue = "") String event) {
         Person person = (Person) session.getAttribute("person");
         if (person == null) {
             return "redirect:/login";
+        } else if (subjectId <= 0 || studentId <= 0 || "".equals(event)) {
+            return "redirect:/mainPage";
         }
 
         if ("delete".equals(event)) {
