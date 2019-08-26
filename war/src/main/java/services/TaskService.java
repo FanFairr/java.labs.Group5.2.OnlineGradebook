@@ -1,20 +1,14 @@
 package services;
 
-import dao.DAOTask;
 import model.Task;
 
 import java.util.List;
 
-public class TaskService {
-    public List<Task> viewAllTask(int subjectId) {
-        return DAOTask.viewAllTask(subjectId);
-    }
+public interface TaskService {
 
-    public Task viewTask(int taskId) {
-        return DAOTask.viewTask(taskId);
-    }
+    List<Task> viewAllTask(int subjectId);
+    Task viewTask(int taskId);
+    int subjectId(int taskId);
+    boolean insertNewTask(Task task);
 
-    public int subjectId(int taskId) {
-        return DAOTask.subjectId(taskId);
-    }
 }

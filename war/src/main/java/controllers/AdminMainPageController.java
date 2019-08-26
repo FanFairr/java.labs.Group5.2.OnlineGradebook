@@ -1,19 +1,22 @@
 package controllers;
 
-import dao.DAOPerson;
-import dao.DAOSubject;
-import dao.DAOTask;
-import dao.DAOTeacherSubject;
+import DAOImpl.DAOPersonImpl;
+import DAOImpl.DAOSubjectImpl;
+import DAOImpl.DAOTaskImpl;
+import DAOImpl.DAOTeacherSubjectImpl;
 import model.Person;
 import model.Subject;
 import model.Task;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
-import services.PersonService;
-import services.SubjectService;
+import servicesImpl.PersonServiceImpl;
+import servicesImpl.SubjectServiceImpl;
+import servicesImpl.TaskServiceImpl;
+import servicesImpl.TeacherSubjectServiceImpl;
 
 import javax.servlet.http.HttpSession;
 
@@ -21,8 +24,17 @@ import javax.servlet.http.HttpSession;
 @SessionAttributes("person")
 public class AdminMainPageController {
 
-    private SubjectService subjectService = new SubjectService();
-    private PersonService personService = new PersonService();
+    @Autowired
+    private SubjectServiceImpl subjectService;
+
+    @Autowired
+    private PersonServiceImpl personService;
+
+    @Autowired
+    private TeacherSubjectServiceImpl teacherSubjectService;
+
+    @Autowired
+    private TaskServiceImpl taskService;
 
     @RequestMapping(value = "addTeacher")
     public ModelAndView addTeacher(HttpSession session) {
@@ -48,7 +60,7 @@ public class AdminMainPageController {
             return "redirect:/mainPage";
         }
 
-        DAOPerson.updateStudent(studentId);
+        personService.updateStudent(studentId);
         return "redirect:/mainPage";
     }
 
@@ -78,7 +90,7 @@ public class AdminMainPageController {
             return "redirect:/mainPage";
         }
 
-        DAOTeacherSubject.insertNewInfo(teacherId, subjectId);
+        teacherSubjectService.insertNewInfo(teacherId, subjectId);
         return "redirect:/mainPage";
     }
 
@@ -106,7 +118,7 @@ public class AdminMainPageController {
             return "redirect:mainPage";
         }
 
-        DAOSubject.insertNewSubject(new Subject(subjectName, subjectContent));
+        subjectService.insertNewSubject(new Subject(subjectName, subjectContent));
         return "redirect:/mainPage";
     }
 
@@ -138,7 +150,7 @@ public class AdminMainPageController {
             return "redirect:/mainPage";
         }
 
-        DAOTask.insertNewTask(new Task(subjectName, taskName, taskContent, maxMark));
+        taskService.insertNewTask(new Task(subjectName, taskName, taskContent, maxMark));
         return "redirect:/mainPage";
     }
 }

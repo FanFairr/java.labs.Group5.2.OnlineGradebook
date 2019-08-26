@@ -1,16 +1,13 @@
 package services;
 
-import dao.DAOSubject;
 import model.Subject;
 
 import java.util.List;
 
-public class SubjectService {
-    public Subject viewSubject(int id) {
-        return DAOSubject.viewSubject(id);
-    }
+public interface SubjectService {
 
-    public List<Subject> viewAllSubject() {
-        return DAOSubject.viewAllSubject();
-    }
+    Subject viewSubject(int id);
+    List<Subject> viewAllSubject();
+    boolean insertNewSubject(Subject subject);
+
 }

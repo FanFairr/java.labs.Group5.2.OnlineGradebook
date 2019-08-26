@@ -1,86 +1,15 @@
-package dao;
+package DAO;
 
 import model.Subject;
+import org.springframework.stereotype.Repository;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.LinkedList;
 import java.util.List;
 
-public class DAOSubject {
+public interface DAOSubject {
 
-    private static PreparedStatement preparedStatement;
-    private static Statement statement;
-    private static ResultSet resultSet;
+    List<Subject> viewAllSubject();
+    Subject viewSubject(int id);
+    boolean insertNewSubject(Subject subject);
+    boolean deleteSubject(int id);
 
-    public static List<Subject> viewAllSubject() {
-        List<Subject> list = new LinkedList<>();
-        try {
-            DAOConnection.connect();
-            statement = DAOConnection.connection.createStatement();
-            resultSet = statement.executeQuery("SELECT * FROM SUBJECT");
-
-            while (resultSet.next()) {
-                list.add(new Subject(resultSet.getInt(1),
-                        resultSet.getString(2),
-                        resultSet.getString(3)));
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            DAOConnection.disconnect();
-        }
-        return list;
-    }
-
-    public static Subject viewSubject(int id) {
-        Subject subject = null;
-        try {
-            DAOConnection.connect();
-            preparedStatement = DAOConnection.connection.prepareStatement("select name, content from subject where ID_SUBJECT = ?");
-            preparedStatement.setInt(1, id);
-            resultSet = preparedStatement.executeQuery();
-
-            resultSet.next();
-            subject = new Subject(resultSet.getString(2), resultSet.getString(3));
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            DAOConnection.disconnect();
-        }
-        return subject;
-    }
-
-    public static boolean insertNewSubject(Subject subject) {
-        boolean b = false;
-        try {
-            DAOConnection.connect();
-            preparedStatement = DAOConnection.connection.prepareStatement("INSERT INTO SUBJECT VALUES (SUBJECT_SEQ.nextval, ?, ?)");
-            preparedStatement.setString(1, subject.getName());
-            preparedStatement.setString(2, subject.getContent());
-            b = preparedStatement.execute();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            DAOConnection.disconnect();
-        }
-        return b;
-    }
-
-    public static boolean deleteSubject(int id) {
-        boolean b = false;
-        try {
-            DAOConnection.connect();
-            preparedStatement = DAOConnection.connection.prepareStatement("DELETE FROM SUBJECT WHERE ID_SUBJECT = ?");
-            preparedStatement.setInt(1, id);
-            b = preparedStatement.execute();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            DAOConnection.disconnect();
-        }
-        return b;
-    }
 }

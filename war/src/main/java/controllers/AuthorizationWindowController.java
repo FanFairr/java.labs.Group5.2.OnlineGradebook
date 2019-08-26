@@ -1,21 +1,20 @@
 package controllers;
 
-import dao.DAOPerson;
 import model.Person;
-import org.springframework.session.web.http.CookieHttpSessionStrategy;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.ModelAndView;
-import services.PersonService;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
+import servicesImpl.PersonServiceImpl;
 
 @Controller
 @SessionAttributes(value = "person")
 public class AuthorizationWindowController {
+
+    @Autowired
+    PersonServiceImpl personService;
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public ModelAndView login(ModelMap model) {
@@ -26,7 +25,7 @@ public class AuthorizationWindowController {
 
     @RequestMapping(value = "/checkLogin", method = RequestMethod.POST)
     public ModelAndView checkLogin(@ModelAttribute("user") Person person, ModelMap model) {
-        if (!PersonService.validateLogin(person)) {
+        if (!personService.validateLogin(person)) {
             ModelAndView modelAndView = new ModelAndView("login");
             modelAndView.addObject("user", new Person());
             modelAndView.addObject("validate", "Login or password enter incorrectly");
@@ -61,7 +60,7 @@ public class AuthorizationWindowController {
         }
 
         Person person = new Person(name, login, password, email);
-        if (PersonService.validateRegistration(person)) {
+        if (personService.validateRegistration(person)) {
             modelAndView.addObject("validate", "Such login exist on db");
             return modelAndView;
         } else {

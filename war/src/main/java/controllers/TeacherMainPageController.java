@@ -1,27 +1,31 @@
 package controllers;
 
-import dao.DAOMark;
+import DAOImpl.DAOMarkImpl;
 import model.Person;
-import model.Task;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
-import services.MarkService;
-import services.PersonService;
-import services.TaskService;
+import servicesImpl.MarkServiceImpl;
+import servicesImpl.PersonServiceImpl;
+import servicesImpl.TaskServiceImpl;
 
 import javax.servlet.http.HttpSession;
-import java.util.List;
 
 @Controller
 @SessionAttributes(value = "person")
 public class TeacherMainPageController {
 
-    private MarkService markService = new MarkService();
-    private TaskService taskService = new TaskService();
-    private PersonService personService = new PersonService();
+    @Autowired
+    private MarkServiceImpl markService;
+
+    @Autowired
+    private TaskServiceImpl taskService;
+
+    @Autowired
+    private PersonServiceImpl personService;
 
     @RequestMapping(value = "/teacherTask")
     public ModelAndView teacherTask(HttpSession session, @RequestParam(value = "id", defaultValue = "0") int id) {
@@ -57,7 +61,7 @@ public class TeacherMainPageController {
             return modelAndView;
         }
 
-        DAOMark.updateMark(taskId, studentId, teacherId, mark);
+        markService.updateMark(taskId, studentId, teacherId, mark);
         modelAndView.setViewName("redirect:/subject?id=" + taskService.subjectId(taskId));
         return modelAndView;
     }

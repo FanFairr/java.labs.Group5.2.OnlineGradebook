@@ -1,10 +1,11 @@
 package controllers;
 
 import model.Person;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-import services.*;
+import servicesImpl.*;
 
 import javax.servlet.http.HttpSession;
 
@@ -12,11 +13,20 @@ import javax.servlet.http.HttpSession;
 @SessionAttributes(value = "person")
 public class StudentMainPageController {
 
-    private MarkService markService = new MarkService();
-    private TaskService taskService = new TaskService();
-    private StudentSubjectService studentSubjectService = new StudentSubjectService();
-    private TeacherSubjectService teacherSubjectService = new TeacherSubjectService();
-    private SubjectService subjectService = new SubjectService();
+    @Autowired
+    private MarkServiceImpl markService;
+
+    @Autowired
+    private TaskServiceImpl taskService;
+
+    @Autowired
+    private StudentSubjectServiceImpl studentSubjectService;
+
+    @Autowired
+    private TeacherSubjectServiceImpl teacherSubjectService;
+
+    @Autowired
+    private SubjectServiceImpl subjectService;
 
     @RequestMapping(value = "/mainPage", method = RequestMethod.GET)
     public ModelAndView viewMainPage(HttpSession session) {

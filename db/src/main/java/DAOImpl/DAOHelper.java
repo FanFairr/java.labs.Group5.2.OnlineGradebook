@@ -1,4 +1,4 @@
-package dao;
+package DAOImpl;
 
 import model.Person;
 import model.Subject;
