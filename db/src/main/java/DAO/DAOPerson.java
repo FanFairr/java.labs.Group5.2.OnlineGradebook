@@ -1,17 +1,23 @@
-package services;
+package DAO;
 
 import model.Person;
 
 import java.util.List;
 
 /**
- * Interface for working with DAOPerson
- * @author Andrey Sherstyuk
+ * Interface for working with the table "Person" on database.
+ * @author Anrey Sherstyuk
  */
-public interface PersonService {
+public interface DAOPerson {
 
     /**
-     * Method of transmitting data to {@link DAOImpl.DAOPersonImpl}
+     * Method for returning all person from the database.
+     * @return List of person
+     */
+    List<Person> viewAllInformation();
+
+    /**
+     * Method for checking the entered data in the "Authorization" window.
      * @param person - data that is checked.
      * @return True, if the data meets the requirements,
      * it is not true in other cases.
@@ -19,8 +25,7 @@ public interface PersonService {
     boolean validateLogin(Person person);
 
     /**
-     * Method of transmitting data to {@link DAOImpl.DAOPersonImpl}
-     * with encryption password and setting status.
+     * Method for checking the entered data in the "Registration" window.
      * @param person - data that is checked.
      * @return True, if the data meets the requirements,
      * it is not true in other cases.
@@ -28,14 +33,15 @@ public interface PersonService {
     boolean validateRegistration(Person person);
 
     /**
-     * Method of transmitting data to {@link DAOImpl.DAOPersonImpl}
+     * The method of selecting a list of persons by task id.
      * @param taskId - task id
      * @return List of persons who have mark on this task.
      */
     List<Person> selectAllStudents(int taskId);
 
     /**
-     * Method of transmitting data to {@link DAOImpl.DAOPersonImpl}
+     * A method for checking whether a given person
+     * is a teacher in a subject.
      * @param personId - teacher id
      * @param taskId - task id
      * @return True if person is a teacher in this subject,
@@ -47,18 +53,19 @@ public interface PersonService {
      * Method for selecting all students.
      * @return list of students.
      */
-    List<Person> viewAllStudent();
+    List<Person> viewAllStudents();
+
+    /**
+     * Update information of person(student -> teacher
+     * with deleting all information about student)
+     * @param studentId - student id
+     */
+    void updateStudent(int studentId);
 
     /**
      * Method for selecting all teachers.
      * @return list of teachers.
      */
     List<Person> viewAllTeachers();
-
-    /**
-     * Method of transmitting data to {@link DAOImpl.DAOPersonImpl}
-     * @param studentId - student id
-     */
-    void updateStudent(int studentId);
 
 }

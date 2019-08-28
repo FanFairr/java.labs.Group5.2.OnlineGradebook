@@ -3,16 +3,26 @@ package DAOImpl;
 import DAO.DAOMark;
 import model.Mark;
 import model.Person;
+import org.apache.log4j.Logger;
 
 import java.sql.*;
 import java.util.*;
 
+/**
+ * Class for working with the table "Mark" on database.
+ * @author Anrey Sherstyuk
+ */
 public class DAOMarkImpl implements DAOMark {
+    private Logger logger = Logger.getLogger(DAOMarkImpl.class);
 
     private PreparedStatement preparedStatement;
     private Statement statement;
     private ResultSet resultSet;
 
+    /**
+     * Method for returning all marks from the database.
+     * @return List of marks
+     */
     public List<Mark> viewAllMark() {
         List<Mark> marks = new LinkedList<>();
 
@@ -33,7 +43,7 @@ public class DAOMarkImpl implements DAOMark {
                         resultSet.getDouble(5)));
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error("Error when use method viewAllMark. Message: " + e.getMessage());
         } finally {
             DAOConnection.disconnect();
         }
@@ -41,6 +51,12 @@ public class DAOMarkImpl implements DAOMark {
         return marks;
     }
 
+    /**
+     * Method for returning mark by subject id.
+     * @param id - subject id
+     * @return A map with a key is the person who teaches the subject
+     * and by value is a list of marks for this subject.
+     */
     public Map<Person, List<Mark>> viewMarks(int id) {
         Map<Person, List<Mark>> map = new HashMap<>();
         try {
@@ -74,13 +90,21 @@ public class DAOMarkImpl implements DAOMark {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error("Error when use method viewMarks. Message: " + e.getMessage());
         } finally {
             DAOConnection.disconnect();
         }
         return map;
     }
 
+    /**
+     * Method for inserting information to table "Mark"
+     * @param taskId - task id
+     * @param studentId - student id
+     * @param teacherId - teacher id
+     * @param mark - mark
+     * @return - The success of the operation.
+     */
     private boolean insertNewMark(int taskId, int studentId, int teacherId, double mark) {
         boolean bool = false;
         try {
@@ -92,13 +116,21 @@ public class DAOMarkImpl implements DAOMark {
             preparedStatement.setDouble(4, mark);
             bool = preparedStatement.execute();
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error("Error when use method insertMark. Message: " + e.getMessage());
         } finally {
             DAOConnection.disconnect();
         }
         return bool;
     }
 
+    /**
+     * Method for updating student marks.
+     * @param taskId - task id
+     * @param studentId - The id of the person who received the mark.
+     * @param teacherId - The id of the person who rated it.
+     * @param mark - mark
+     * @return The success of the operation.
+     */
     public boolean updateMark(int taskId, int studentId, int teacherId, double mark) {
         boolean b = false;
         try {
@@ -119,13 +151,18 @@ public class DAOMarkImpl implements DAOMark {
             } else
                 b = insertNewMark(taskId, studentId, teacherId, mark);
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error("Error when use method updateMark. Message: " + e.getMessage());
         } finally {
             DAOConnection.disconnect();
         }
         return b;
     }
 
+    /**
+     * Method for delete student marks.
+     * @param markId - The id of the mark to be deleted.
+     * @return The success of the operation.
+     */
     public boolean deleteMark(int markId) {
         boolean bool = false;
         try {
@@ -134,7 +171,7 @@ public class DAOMarkImpl implements DAOMark {
             preparedStatement.setInt(1, markId);
             bool = preparedStatement.execute();
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error("Error when use method deleteMark. Message: " + e.getMessage());
         } finally {
             DAOConnection.disconnect();
         }

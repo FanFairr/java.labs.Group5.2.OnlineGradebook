@@ -2,6 +2,7 @@ package DAOImpl;
 
 import DAO.DAOTask;
 import model.Task;
+import org.apache.log4j.Logger;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -10,12 +11,22 @@ import java.sql.Statement;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * Class for working with the table "Task" on database.
+ * @author Anrey Sherstyuk
+ */
 public class DAOTaskImpl implements DAOTask {
+    Logger logger = Logger.getLogger(DAOTaskImpl.class);
 
     private PreparedStatement preparedStatement;
     private Statement statement;
     private ResultSet resultSet;
 
+    /**
+     * Method for selecting all tasks of subject id.
+     * @param subjectId - subject id
+     * @return - List of tasks.
+     */
     public List<Task> viewAllTask(int subjectId) {
         List<Task> list = new LinkedList<>();
         try {
@@ -34,13 +45,18 @@ public class DAOTaskImpl implements DAOTask {
                         resultSet.getDouble(4)));
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error("Error when use method viewAllTask. Message: " + e.getMessage());
         } finally {
             DAOConnection.disconnect();
         }
         return list;
     }
 
+    /**
+     * Method for selecting task of task id.
+     * @param taskId - task id.
+     * @return - Task.
+     */
     public Task viewTask(int taskId) {
         Task task = new Task();
         try {
@@ -56,13 +72,18 @@ public class DAOTaskImpl implements DAOTask {
                 task.setMax_mark(resultSet.getDouble(3));
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error("Error when use method viewTask. Message: " + e.getMessage());
         } finally {
             DAOConnection.disconnect();
         }
         return task;
     }
 
+    /**
+     * Method for inserting information to table "Task".
+     * @param task - task for inserting.
+     * @return - The success of the operation.
+     */
     public boolean insertNewTask(Task task) {
         boolean b = false;
         try {
@@ -75,13 +96,18 @@ public class DAOTaskImpl implements DAOTask {
             preparedStatement.setDouble(4, task.getMax_mark());
             b = preparedStatement.execute();
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error("Error when use method insertNewTask. Message: " + e.getMessage());
         } finally {
             DAOConnection.disconnect();
         }
         return b;
     }
 
+    /**
+     * Method for selecting subject id of task id.
+     * @param taskId - task id
+     * @return - subject id.
+     */
     public int subjectId(int taskId) {
         int subjectId = 0;
 
@@ -94,7 +120,7 @@ public class DAOTaskImpl implements DAOTask {
             resultSet.next();
             subjectId = resultSet.getInt(1);
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error("Error when use method subjectId. Message: " + e.getMessage());
         } finally {
             DAOConnection.disconnect();
         }

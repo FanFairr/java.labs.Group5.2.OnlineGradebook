@@ -2,20 +2,29 @@ package DAOImpl;
 
 import DAO.DAOPerson;
 import model.Person;
+import org.apache.log4j.Logger;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.stereotype.Repository;
 
 import java.sql.*;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * Class for working with the table "Person" on database.
+ * @author Anrey Sherstyuk
+ */
 public class DAOPersonImpl implements DAOPerson {
+    private Logger logger = Logger.getLogger(DAOPersonImpl.class);
     private BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
 
     private PreparedStatement preparedStatement;
     private Statement statement;
     private ResultSet resultSet;
 
+    /**
+     * Method for returning all person from the database.
+     * @return List of person
+     */
     public List<Person> viewAllInformation() {
         List<Person> personList = new LinkedList<>();
         try {
@@ -31,13 +40,19 @@ public class DAOPersonImpl implements DAOPerson {
                         resultSet.getString(5)));
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error("Error when use method viewAllInformation. Message: " + e.getMessage());
         } finally {
             DAOConnection.disconnect();
         }
         return personList;
     }
 
+    /**
+     * Method for checking the entered data in the "Authorization" window.
+     * @param person - data that is checked.
+     * @return True, if the data meets the requirements,
+     * it is not true in other cases.
+     */
     public boolean validateLogin(Person person) {
         boolean b = false;
         try {
@@ -55,13 +70,19 @@ public class DAOPersonImpl implements DAOPerson {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error("Error when use method validateLogin. Message: " + e.getMessage());
         } finally {
             DAOConnection.disconnect();
         }
         return b;
     }
 
+    /**
+     * Method for checking the entered data in the "Registration" window.
+     * @param person - data that is checked.
+     * @return True, if the data meets the requirements,
+     * it is not true in other cases.
+     */
     public boolean validateRegistration(Person person) {
         boolean b = false;
         try {
@@ -80,13 +101,18 @@ public class DAOPersonImpl implements DAOPerson {
                 preparedStatement.execute();
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error("Error when use method validateRegistration. Message: " + e.getMessage());
         } finally {
             DAOConnection.disconnect();
         }
         return b;
     }
 
+    /**
+     * The method of selecting a list of persons by task id.
+     * @param taskId - task id
+     * @return List of persons who have mark on this task.
+     */
     public List<Person> selectAllStudents(int taskId) {
         List<Person> personList = new LinkedList<>();
 
@@ -106,7 +132,7 @@ public class DAOPersonImpl implements DAOPerson {
                 personList.add(new Person(resultSet.getInt(1), resultSet.getString(2)));
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error("Error when use method selectAllStudents. Message: " + e.getMessage());
         } finally {
             DAOConnection.disconnect();
         }
@@ -114,6 +140,14 @@ public class DAOPersonImpl implements DAOPerson {
         return personList;
     }
 
+    /**
+     * A method for checking whether a given person
+     * is a teacher in a subject.
+     * @param personId - teacher id
+     * @param taskId - task id
+     * @return True if person is a teacher in this subject,
+     *  false in other cases.
+     */
     public boolean personInfo(int personId, int taskId) {
         boolean b = false;
 
@@ -131,7 +165,7 @@ public class DAOPersonImpl implements DAOPerson {
 
             b = resultSet.next();
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error("Error when use method personInfo. Message: " + e.getMessage());
         } finally {
             DAOConnection.disconnect();
         }
@@ -139,6 +173,10 @@ public class DAOPersonImpl implements DAOPerson {
         return b;
     }
 
+    /**
+     * Method for selecting all students.
+     * @return list of students.
+     */
     public List<Person> viewAllStudents() {
         List<Person> list = new LinkedList<>();
         try {
@@ -149,13 +187,18 @@ public class DAOPersonImpl implements DAOPerson {
                 list.add(new Person(resultSet.getInt(1), resultSet.getString(2)));
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error("Error when use method viewAllStudents. Message: " + e.getMessage());
         } finally {
             DAOConnection.disconnect();
         }
         return list;
     }
 
+    /**
+     * Update information of person(student -> teacher
+     * with deleting all information about student)
+     * @param studentId - student id
+     */
     public void updateStudent(int studentId) {
         try {
             DAOConnection.connect();
@@ -183,12 +226,16 @@ public class DAOPersonImpl implements DAOPerson {
             preparedStatement.setInt(1, studentId);
             preparedStatement.execute();
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error("Error when use method updateStudent. Message: " + e.getMessage());
         } finally {
             DAOConnection.disconnect();
         }
     }
 
+    /**
+     * Method for selecting all teachers.
+     * @return list of teachers.
+     */
     public List<Person> viewAllTeachers() {
         List<Person> list = new LinkedList<>();
         try {
@@ -199,7 +246,7 @@ public class DAOPersonImpl implements DAOPerson {
                 list.add(new Person(resultSet.getInt(1), resultSet.getString(2)));
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error("Error when use method viewAllTeachers. Message: " + e.getMessage());
         } finally {
             DAOConnection.disconnect();
         }

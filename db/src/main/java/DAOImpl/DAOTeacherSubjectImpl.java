@@ -3,6 +3,7 @@ package DAOImpl;
 import DAO.DAOTeacherSubject;
 import model.Person;
 import model.Subject;
+import org.apache.log4j.Logger;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -10,12 +11,21 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.*;
 
+/**
+ * Class for working with the table "TeacherSubject" on database.
+ * @author Anrey Sherstyuk
+ */
 public class DAOTeacherSubjectImpl implements DAOTeacherSubject {
+    Logger logger = Logger.getLogger(DAOTeacherSubjectImpl.class);
 
     private PreparedStatement preparedStatement;
     private Statement statement;
     private ResultSet resultSet;
 
+    /**
+     * Method for selecting information - person -> subject list that this person teaches.
+     * @return - Map key - person, value - subjects that this person teaches.
+     */
     public Map<Person, List<Subject>> viewTeacherSubject() {
         Map<Person, List<Subject>> map = new HashMap<>();
 
@@ -29,7 +39,7 @@ public class DAOTeacherSubjectImpl implements DAOTeacherSubject {
 
             DAOHelper.personSubject(map, resultSet);
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error("Error when use method viewTeacherSubject. Message: " + e.getMessage());
         } finally {
             DAOConnection.disconnect();
         }
@@ -37,6 +47,10 @@ public class DAOTeacherSubjectImpl implements DAOTeacherSubject {
         return map;
     }
 
+    /**
+     * Method for selecting information - subject -> person list that teaches this subject.
+     * @return - Map key - person, value - subjects that this person teaches.
+     */
     public Map<Subject, List<Person>> viewSubjectTeacher() {
         Map<Subject, List<Person>> map = new HashMap<>();
 
@@ -50,7 +64,7 @@ public class DAOTeacherSubjectImpl implements DAOTeacherSubject {
 
             DAOHelper.subjectPerson(map, resultSet);
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error("Error when use method viewSubjectTeacher. Message: " + e.getMessage());
         } finally {
             DAOConnection.disconnect();
         }
@@ -58,6 +72,11 @@ public class DAOTeacherSubjectImpl implements DAOTeacherSubject {
         return map;
     }
 
+    /**
+     * Method for selecting subject set for teacher id.
+     * @param teacherId - teacher id.
+     * @return - subject set that this person teaches.
+     */
     public Set<Subject> teacherSubjectSet(int teacherId) {
         Set<Subject> set = new HashSet<>();
 
@@ -76,12 +95,20 @@ public class DAOTeacherSubjectImpl implements DAOTeacherSubject {
                         resultSet.getString(2), resultSet.getString(3)));
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error("Error when use method teacherSubjectSet. Message: " + e.getMessage());
+        } finally {
+            DAOConnection.disconnect();
         }
 
         return set;
     }
 
+    /**
+     * Method for inserting information for table "TeacherSubject".
+     * @param teacherId - teacher id.
+     * @param subjectId - subject id.
+     * @return - The success of the operation.
+     */
     public boolean insertNewInfo(int teacherId, int subjectId) {
         boolean b = false;
 
@@ -92,7 +119,7 @@ public class DAOTeacherSubjectImpl implements DAOTeacherSubject {
             preparedStatement.setInt(2, subjectId);
             b = preparedStatement.execute();
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error("Error when use method insertNewInfo. Message: " + e.getMessage());
         } finally {
             DAOConnection.disconnect();
         }
@@ -100,6 +127,12 @@ public class DAOTeacherSubjectImpl implements DAOTeacherSubject {
         return b;
     }
 
+    /**
+     * Method for deleting information on table "TeacherSubject".
+     * @param teacherId - teacher id.
+     * @param subjectId - subject id.
+     * @return - The success of the operation.
+     */
     public boolean deleteInfo(int teacherId, int subjectId) {
         boolean b = false;
 
@@ -110,7 +143,7 @@ public class DAOTeacherSubjectImpl implements DAOTeacherSubject {
             preparedStatement.setInt(2, subjectId);
             b = preparedStatement.execute();
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error("Error when use method deleteInfo. Message: " + e.getMessage());
         } finally {
             DAOConnection.disconnect();
         }
