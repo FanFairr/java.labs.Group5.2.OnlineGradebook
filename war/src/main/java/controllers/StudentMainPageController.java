@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-import servicesImpl.*;
+import services.*;
 
 import javax.servlet.http.HttpSession;
 
@@ -20,19 +20,19 @@ public class StudentMainPageController {
     Logger logger = Logger.getLogger(StudentMainPageController.class);
 
     @Autowired
-    private MarkServiceImpl markService;
+    private MarkService markService;
 
     @Autowired
-    private TaskServiceImpl taskService;
+    private TaskService taskService;
 
     @Autowired
-    private StudentSubjectServiceImpl studentSubjectService;
+    private StudentSubjectService studentSubjectService;
 
     @Autowired
-    private TeacherSubjectServiceImpl teacherSubjectService;
+    private TeacherSubjectService teacherSubjectService;
 
     @Autowired
-    private SubjectServiceImpl subjectService;
+    private SubjectService subjectService;
 
     /**
      * Method to go to the main page.

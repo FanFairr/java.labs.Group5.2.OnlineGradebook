@@ -2,21 +2,15 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
+    <import resource="classpath:dispatcher-servlet.xml"/>
     <context:component-scan base-package="controllers"/>
 
     <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
         <property name="prefix" value="WEB-INF/view/"/>
         <property name="suffix" value=".jsp"/>
     </bean>
-
-    <bean id="daoMarkImpl" class="DAOImpl.DAOMarkImpl"/>
-    <bean id="daoPersonImpl" class="DAOImpl.DAOPersonImpl"/>
-    <bean id="daoStudentSubjectImpl" class="DAOImpl.DAOStudentSubjectImpl"/>
-    <bean id="daoSubjectImpl" class="DAOImpl.DAOSubjectImpl"/>
-    <bean id="daoTaskImpl" class="DAOImpl.DAOTaskImpl"/>
-    <bean id="daoTeacherSubjectImpl" class="DAOImpl.DAOTeacherSubjectImpl"/>
 
     <bean id="personServiceImpl" class="servicesImpl.PersonServiceImpl"/>
     <bean id="markServiceImpl" class="servicesImpl.MarkServiceImpl"/>

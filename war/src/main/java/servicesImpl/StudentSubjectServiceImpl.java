@@ -1,6 +1,6 @@
 package servicesImpl;
 
-import DAOImpl.DAOStudentSubjectImpl;
+import DAO.DAOStudentSubject;
 import model.Person;
 import model.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +15,7 @@ import java.util.Map;
 public class StudentSubjectServiceImpl implements StudentSubjectService {
 
     @Autowired
-    DAOStudentSubjectImpl daoStudentSubject;
+    DAOStudentSubject daoStudentSubject;
 
     /**
      * Method for selecting information - subject -> teacher name that teaching this subject.

@@ -1,6 +1,6 @@
 package servicesImpl;
 
-import DAOImpl.DAOSubjectImpl;
+import DAO.DAOSubject;
 import model.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import services.SubjectService;
@@ -14,7 +14,7 @@ import java.util.List;
 public class SubjectServiceImpl implements SubjectService{
 
     @Autowired
-    DAOSubjectImpl daoSubject;
+    DAOSubject daoSubject;
 
     /**
      * Method of transmitting data to {@link DAOImpl.DAOSubjectImpl}

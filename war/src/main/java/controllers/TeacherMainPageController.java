@@ -1,6 +1,5 @@
 package controllers;
 
-import DAOImpl.DAOMarkImpl;
 import model.Person;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,9 +8,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
-import servicesImpl.MarkServiceImpl;
-import servicesImpl.PersonServiceImpl;
-import servicesImpl.TaskServiceImpl;
+import services.MarkService;
+import services.PersonService;
+import services.TaskService;
 
 import javax.servlet.http.HttpSession;
 
@@ -25,13 +24,13 @@ public class TeacherMainPageController {
     Logger logger = Logger.getLogger(TeacherMainPageController.class);
 
     @Autowired
-    private MarkServiceImpl markService;
+    private MarkService markService;
 
     @Autowired
-    private TaskServiceImpl taskService;
+    private TaskService taskService;
 
     @Autowired
-    private PersonServiceImpl personService;
+    private PersonService personService;
 
     /**
      * Method for opening page with setting marks.

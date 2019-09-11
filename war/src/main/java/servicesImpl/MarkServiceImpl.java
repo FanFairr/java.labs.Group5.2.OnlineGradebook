@@ -1,6 +1,6 @@
 package servicesImpl;
 
-import DAOImpl.DAOMarkImpl;
+import DAO.DAOMark;
 import model.Mark;
 import model.Person;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +16,7 @@ import java.util.Map;
 public class MarkServiceImpl implements MarkService {
 
     @Autowired
-    DAOMarkImpl daoMark;
+    DAOMark daoMark;
 
     /**
      * Method of transmitting data to {@link DAOImpl.DAOMarkImpl}

@@ -4,11 +4,10 @@ import model.Person;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.ModelAndView;
-import servicesImpl.PersonServiceImpl;
+import services.PersonService;
 
 import javax.servlet.http.HttpSession;
 
@@ -22,7 +21,7 @@ public class AuthorizationWindowController {
     Logger logger = Logger.getLogger(AuthorizationWindowController.class);
 
     @Autowired
-    PersonServiceImpl personService;
+    PersonService personService;
 
     /**
      * Method for opening login page.

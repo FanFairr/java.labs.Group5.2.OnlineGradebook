@@ -10,10 +10,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
-import servicesImpl.PersonServiceImpl;
-import servicesImpl.SubjectServiceImpl;
-import servicesImpl.TaskServiceImpl;
-import servicesImpl.TeacherSubjectServiceImpl;
+import services.PersonService;
+import services.SubjectService;
+import services.TaskService;
+import services.TeacherSubjectService;
 
 import javax.servlet.http.HttpSession;
 
@@ -27,16 +27,16 @@ public class AdminMainPageController {
     Logger logger = Logger.getLogger(AdminMainPageController.class);
 
     @Autowired
-    private SubjectServiceImpl subjectService;
+    private SubjectService subjectService;
 
     @Autowired
-    private PersonServiceImpl personService;
+    private PersonService personService;
 
     @Autowired
-    private TeacherSubjectServiceImpl teacherSubjectService;
+    private TeacherSubjectService teacherSubjectService;
 
     @Autowired
-    private TaskServiceImpl taskService;
+    private TaskService taskService;
 
     /**
      * Method for opening the menu to add a new teacher.
