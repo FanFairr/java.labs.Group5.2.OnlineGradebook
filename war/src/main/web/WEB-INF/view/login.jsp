@@ -16,7 +16,7 @@
     <spring:input path="login"/><br/>
     <spring:password path="password"/><br/>
     ${validate}<br/>
-    <spring:button>Check</spring:button>
+    <spring:button>Login</spring:button>
 </spring:form>
 <a href="registration" style="padding-left: 40%;"><button>Registration</button></a>
 </body>

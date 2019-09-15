@@ -18,7 +18,7 @@ import java.util.Map;
  * @author Anrey Sherstyuk
  */
 public class DAOStudentSubjectImpl implements DAOStudentSubject {
-    private Logger logger = Logger.getLogger(DAOStudentSubjectImpl.class);
+    private static final Logger DAOSSLOGGER = Logger.getLogger(DAOStudentSubjectImpl.class);
 
     private PreparedStatement preparedStatement;
     private Statement statement;
@@ -41,7 +41,7 @@ public class DAOStudentSubjectImpl implements DAOStudentSubject {
 
             DAOHelper.personSubject(map, resultSet);
         } catch (SQLException e) {
-            logger.error("Error when use method ViewStudentSubject. Message: " + e.getMessage());
+            DAOSSLOGGER.error("Error when use method ViewStudentSubject. Message: " + e.getMessage());
         } finally {
             DAOConnection.disconnect();
         }
@@ -66,7 +66,7 @@ public class DAOStudentSubjectImpl implements DAOStudentSubject {
 
             DAOHelper.subjectPerson(map, resultSet);
         } catch (SQLException e) {
-            logger.error("Error when use method viewSubjectStudent. Message: " + e.getMessage());
+            DAOSSLOGGER.error("Error when use method viewSubjectStudent. Message: " + e.getMessage());
         } finally {
             DAOConnection.disconnect();
         }
@@ -95,7 +95,7 @@ public class DAOStudentSubjectImpl implements DAOStudentSubject {
                         resultSet.getString(4));
             }
         } catch (SQLException e) {
-            logger.error("Error when use method subjectList. Message: " + e.getMessage());
+            DAOSSLOGGER.error("Error when use method subjectList. Message: " + e.getMessage());
         } finally {
             DAOConnection.disconnect();
         }
@@ -129,7 +129,7 @@ public class DAOStudentSubjectImpl implements DAOStudentSubject {
                         resultSet.getString(4));
             }
         } catch (SQLException e) {
-            logger.error("Error when use method studentSubjectList. Message: " + e.getMessage());
+            DAOSSLOGGER.error("Error when use method studentSubjectList. Message: " + e.getMessage());
         } finally {
             DAOConnection.disconnect();
         }
@@ -153,7 +153,7 @@ public class DAOStudentSubjectImpl implements DAOStudentSubject {
             preparedStatement.setInt(2, subjectId);
             b = preparedStatement.execute();
         } catch (SQLException e) {
-            logger.error("Error when use method insertNewInfo. Message: " + e.getMessage());
+            DAOSSLOGGER.error("Error when use method insertNewInfo. Message: " + e.getMessage());
         } finally {
             DAOConnection.disconnect();
         }
@@ -177,7 +177,7 @@ public class DAOStudentSubjectImpl implements DAOStudentSubject {
             preparedStatement.setInt(2, subjectId);
             b = preparedStatement.execute();
         } catch (SQLException e) {
-            logger.error("Error when use method deleteInfo. Message: " + e.getMessage());
+            DAOSSLOGGER.error("Error when use method deleteInfo. Message: " + e.getMessage());
         } finally {
             DAOConnection.disconnect();
         }
@@ -207,7 +207,7 @@ public class DAOStudentSubjectImpl implements DAOStudentSubject {
             resultSet = preparedStatement.executeQuery();
             b = resultSet.next();
         } catch (SQLException e) {
-            logger.error("Error when use method studentInfo. Message: " + e.getMessage());
+            DAOSSLOGGER.error("Error when use method studentInfo. Message: " + e.getMessage());
         } finally {
             DAOConnection.disconnect();
         }

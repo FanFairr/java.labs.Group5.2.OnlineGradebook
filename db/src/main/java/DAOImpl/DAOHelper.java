@@ -13,7 +13,7 @@ import java.util.*;
  * @author Andrey Sherstyuk
  */
 class DAOHelper {
-    private static Logger logger = Logger.getLogger(DAOHelper.class);
+    private static final Logger logger = Logger.getLogger(DAOHelper.class);
 
     /**
      * Method for filling the map(key - person, value - subject list) from resultSet.

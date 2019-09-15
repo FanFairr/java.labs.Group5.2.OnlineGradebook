@@ -12,7 +12,7 @@ import java.sql.SQLException;
  */
 class DAOConnection {
 
-    private static Logger logger = Logger.getLogger(DAOConnection.class);
+    private static final Logger DAOCONNECTIONLOGGER = Logger.getLogger(DAOConnection.class);
 
     private final static String DRIVER = "oracle.jdbc.driver.OracleDriver";
     private final static String URL = "jdbc:oracle:thin:@localhost:1521:Druce";
@@ -31,7 +31,7 @@ class DAOConnection {
             connection = DriverManager.getConnection(URL, LOGIN, PASSWORD);
             isConnected = connection == null;
         } catch (ClassNotFoundException | SQLException e) {
-            logger.error("Error connection to database. Message: " + e.getMessage());
+            DAOCONNECTIONLOGGER.error("Error connection to database. Message: " + e.getMessage());
         }
     }
 
@@ -43,7 +43,7 @@ class DAOConnection {
             connection.close();
             isConnected = connection == null;
         } catch (SQLException e) {
-            logger.error("Error disconnect from database. Message: " + e.getMessage());
+            DAOCONNECTIONLOGGER.error("Error disconnect from database. Message: " + e.getMessage());
         }
     }
 

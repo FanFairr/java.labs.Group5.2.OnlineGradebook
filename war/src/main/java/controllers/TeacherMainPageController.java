@@ -1,5 +1,6 @@
 package controllers;
 
+import model.Patterns;
 import model.Person;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +22,7 @@ import javax.servlet.http.HttpSession;
 @Controller
 @SessionAttributes(value = "person")
 public class TeacherMainPageController {
-    Logger logger = Logger.getLogger(TeacherMainPageController.class);
+    private static final Logger TEACHERMAINPAGELOGGER = Logger.getLogger(TeacherMainPageController.class);
 
     @Autowired
     private MarkService markService;
@@ -43,17 +44,17 @@ public class TeacherMainPageController {
         Person person = (Person) session.getAttribute("person");
         ModelAndView modelAndView = new ModelAndView();
         if (person == null) {
-            logger.info("User without authorization tried to enter the page teacherTask.");
-            modelAndView.setViewName("redirect:/login");
+            TEACHERMAINPAGELOGGER.info("User without authorization tried to enter the page teacherTask.");
+            modelAndView.setViewName(Patterns.redLogin);
             return modelAndView;
         } else if (id <= 0) {
-            logger.info("The user without the entered parameters tried to enter the page teacherTask.");
-            modelAndView.setViewName("redirect:/mainPage");
+            TEACHERMAINPAGELOGGER.info("The user without the entered parameters tried to enter the page teacherTask.");
+            modelAndView.setViewName(Patterns.redMainPage);
             return modelAndView;
         }
 
-        logger.info("The user successfully completed the transition to teacherTask.");
-        modelAndView.setViewName("task");
+        TEACHERMAINPAGELOGGER.info("The user successfully completed the transition to teacherTask.");
+        modelAndView.setViewName(Patterns.task);
         modelAndView.addObject("task", taskService.viewTask(id));
         modelAndView.addObject("students", personService.selectAllStudents(id));
         modelAndView.addObject("personInfo", personService.personInfo(person.getId(), id));
@@ -77,18 +78,18 @@ public class TeacherMainPageController {
         Person person = (Person) session.getAttribute("person");
         ModelAndView modelAndView = new ModelAndView();
         if (person == null) {
-            logger.info("User without authorization tried to enter the page mark.");
-            modelAndView.setViewName("redirect:/login");
+            TEACHERMAINPAGELOGGER.info("User without authorization tried to enter the page mark.");
+            modelAndView.setViewName(Patterns.redLogin);
             return modelAndView;
         } else if (studentId <= 0 || mark <= 0 || teacherId <= 0 || taskId <= 0) {
-            logger.info("The user without the entered parameters tried to enter the page mark.");
-            modelAndView.setViewName("redirect:/mainPage");
+            TEACHERMAINPAGELOGGER.info("The user without the entered parameters tried to enter the page mark.");
+            modelAndView.setViewName(Patterns.redMainPage);
             return modelAndView;
         }
 
-        logger.info("The user successfully completed the transition to mark.");
+        TEACHERMAINPAGELOGGER.info("The user successfully completed the transition to mark.");
         markService.updateMark(taskId, studentId, teacherId, mark);
-        modelAndView.setViewName("redirect:/subject?id=" + taskService.subjectId(taskId));
+        modelAndView.setViewName(Patterns.redSubject + taskService.subjectId(taskId));
         return modelAndView;
     }
 }

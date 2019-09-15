@@ -1,5 +1,6 @@
 package controllers;
 
+import model.Patterns;
 import model.Person;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,10 +19,19 @@ import javax.servlet.http.HttpSession;
 @Controller
 @SessionAttributes(value = "person")
 public class AuthorizationWindowController {
-    Logger logger = Logger.getLogger(AuthorizationWindowController.class);
+    private static final Logger AUTHORIZATIONLOGGER = Logger.getLogger(AuthorizationWindowController.class);
 
     @Autowired
     PersonService personService;
+
+    /**
+     * Method for opening index page with the possible filling of the database.
+     */
+    @RequestMapping(value = "/")
+    public String index() {
+
+        return Patterns.index;
+    }
 
     /**
      * Method for opening login page.
@@ -29,8 +39,8 @@ public class AuthorizationWindowController {
      */
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public ModelAndView login() {
-        logger.info("The user successfully completed the transition to login.");
-        ModelAndView modelAndView = new ModelAndView("login");
+        AUTHORIZATIONLOGGER.info("The user successfully completed the transition to login.");
+        ModelAndView modelAndView = new ModelAndView(Patterns.login);
         modelAndView.addObject("user", new Person());
         return modelAndView;
     }
@@ -45,14 +55,14 @@ public class AuthorizationWindowController {
     @RequestMapping(value = "/checkLogin", method = RequestMethod.POST)
     public ModelAndView checkLogin(@ModelAttribute("user") Person person, HttpSession session) {
         if (!personService.validateLogin(person)) {
-            logger.info("The user entered incorrect data on login page.");
-            ModelAndView modelAndView = new ModelAndView("login");
+            AUTHORIZATIONLOGGER.info("The user entered incorrect data on login page.");
+            ModelAndView modelAndView = new ModelAndView(Patterns.login);
             modelAndView.addObject("user", new Person());
             modelAndView.addObject("validate", "Login or password enter incorrectly");
             return modelAndView;
         } else {
-            logger.info("The user successfully completed the transition to checkLogin.");
-            ModelAndView modelAndView = new ModelAndView("redirect:/mainPage");
+            AUTHORIZATIONLOGGER.info("The user successfully completed the transition to checkLogin.");
+            ModelAndView modelAndView = new ModelAndView(Patterns.redMainPage);
             modelAndView.addObject("user", person);
             session.setAttribute("person", person);
             return modelAndView;
@@ -66,8 +76,8 @@ public class AuthorizationWindowController {
      */
     @RequestMapping(value = "/registration", method = RequestMethod.GET)
     public ModelAndView registration(@RequestParam(value = "validate", defaultValue = "") String validate) {
-        logger.info("The user successfully completed the transition to registration.");
-        ModelAndView modelAndView = new ModelAndView("registration");
+        AUTHORIZATIONLOGGER.info("The user successfully completed the transition to registration.");
+        ModelAndView modelAndView = new ModelAndView(Patterns.registration);
         modelAndView.addObject("validate", validate);
         return modelAndView;
     }
@@ -88,25 +98,25 @@ public class AuthorizationWindowController {
                                           @RequestParam(value = "name", defaultValue = "") String name,
                                           @RequestParam(value = "email", defaultValue = "") String email) {
 
-        ModelAndView modelAndView = new ModelAndView("redirect:/registration");
+        ModelAndView modelAndView = new ModelAndView(Patterns.redRegistration);
         if ("".equals(login) || "".equals(password) || "".equals(name) || "".equals(email)) {
-            logger.info("The user without the entered parameters tried to enter the page checkRegistration.");
+            AUTHORIZATIONLOGGER.info("The user without the entered parameters tried to enter the page checkRegistration.");
             modelAndView.addObject("validate", "Fields must be not empty!");
             return modelAndView;
         } else if (login.length() > 20 || password.length() > 20 || name.length() > 20 || email.length() > 30) {
-            logger.info("The user entered incorrect data on registration page.(fields must be less or equals 20)");
+            AUTHORIZATIONLOGGER.info("The user entered incorrect data on registration page.(fields must be less or equals 20)");
             modelAndView.addObject("validate", "Fields must be less or equals 20!");
             return modelAndView;
         }
 
         Person person = new Person(name, login, password, email);
         if (personService.validateRegistration(person)) {
-            logger.info("The user entered incorrect data on registration page.");
+            AUTHORIZATIONLOGGER.info("The user entered incorrect data on registration page.");
             modelAndView.addObject("validate", "Such login exist on db");
             return modelAndView;
         } else {
-            logger.info("The user successfully completed the transition to checkRegistration.");
-            modelAndView.setViewName("redirect:/mainPage");
+            AUTHORIZATIONLOGGER.info("The user successfully completed the transition to checkRegistration.");
+            modelAndView.setViewName(Patterns.redMainPage);
             session.setAttribute("person", person);
             return modelAndView;
         }
@@ -119,8 +129,8 @@ public class AuthorizationWindowController {
      */
     @RequestMapping(value = "/logout")
     public String logout(SessionStatus session) {
-        logger.info("The user successfully completed the transition to logout.");
+        AUTHORIZATIONLOGGER.info("The user successfully completed the transition to logout.");
         session.setComplete();
-        return "redirect:/login";
+        return Patterns.redLogin;
     }
 }

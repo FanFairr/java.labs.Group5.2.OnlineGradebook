@@ -13,7 +13,7 @@ import java.util.*;
  * @author Anrey Sherstyuk
  */
 public class DAOMarkImpl implements DAOMark {
-    private Logger logger = Logger.getLogger(DAOMarkImpl.class);
+    private static final Logger DAOMLOGGER = Logger.getLogger(DAOMarkImpl.class);
 
     private PreparedStatement preparedStatement;
     private Statement statement;
@@ -43,7 +43,7 @@ public class DAOMarkImpl implements DAOMark {
                         resultSet.getDouble(5)));
             }
         } catch (SQLException e) {
-            logger.error("Error when use method viewAllMark. Message: " + e.getMessage());
+            DAOMLOGGER.error("Error when use method viewAllMark. Message: " + e.getMessage());
         } finally {
             DAOConnection.disconnect();
         }
@@ -90,7 +90,7 @@ public class DAOMarkImpl implements DAOMark {
                 }
             }
         } catch (SQLException e) {
-            logger.error("Error when use method viewMarks. Message: " + e.getMessage());
+            DAOMLOGGER.error("Error when use method viewMarks. Message: " + e.getMessage());
         } finally {
             DAOConnection.disconnect();
         }
@@ -116,7 +116,7 @@ public class DAOMarkImpl implements DAOMark {
             preparedStatement.setDouble(4, mark);
             bool = preparedStatement.execute();
         } catch (SQLException e) {
-            logger.error("Error when use method insertMark. Message: " + e.getMessage());
+            DAOMLOGGER.error("Error when use method insertNewMark. Message: " + e.getMessage());
         } finally {
             DAOConnection.disconnect();
         }
@@ -151,7 +151,7 @@ public class DAOMarkImpl implements DAOMark {
             } else
                 b = insertNewMark(taskId, studentId, teacherId, mark);
         } catch (SQLException e) {
-            logger.error("Error when use method updateMark. Message: " + e.getMessage());
+            DAOMLOGGER.error("Error when use method updateMark. Message: " + e.getMessage());
         } finally {
             DAOConnection.disconnect();
         }
@@ -171,7 +171,7 @@ public class DAOMarkImpl implements DAOMark {
             preparedStatement.setInt(1, markId);
             bool = preparedStatement.execute();
         } catch (SQLException e) {
-            logger.error("Error when use method deleteMark. Message: " + e.getMessage());
+            DAOMLOGGER.error("Error when use method deleteMark. Message: " + e.getMessage());
         } finally {
             DAOConnection.disconnect();
         }

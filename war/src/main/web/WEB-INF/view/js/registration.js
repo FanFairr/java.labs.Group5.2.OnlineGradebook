@@ -16,7 +16,7 @@ function reg() {
         alert("Login must be less or equals 20");
     } else if (name.length > 20) {
         alert("Name must be less or equals 20");
-    } else if (email.length > 20) {
+    } else if (email.length > 30) {
         alert("email must be less or equals 30");
     } else {
         document.location.href = 'checkRegistration?login=' + login + "&password=" + password + "&name=" + name + "&email=" + email;

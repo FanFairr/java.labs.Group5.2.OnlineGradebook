@@ -16,7 +16,7 @@ import java.util.*;
  * @author Anrey Sherstyuk
  */
 public class DAOTeacherSubjectImpl implements DAOTeacherSubject {
-    Logger logger = Logger.getLogger(DAOTeacherSubjectImpl.class);
+    private static final Logger DAOTSLOGGER = Logger.getLogger(DAOTeacherSubjectImpl.class);
 
     private PreparedStatement preparedStatement;
     private Statement statement;
@@ -39,7 +39,7 @@ public class DAOTeacherSubjectImpl implements DAOTeacherSubject {
 
             DAOHelper.personSubject(map, resultSet);
         } catch (SQLException e) {
-            logger.error("Error when use method viewTeacherSubject. Message: " + e.getMessage());
+            DAOTSLOGGER.error("Error when use method viewTeacherSubject. Message: " + e.getMessage());
         } finally {
             DAOConnection.disconnect();
         }
@@ -64,7 +64,7 @@ public class DAOTeacherSubjectImpl implements DAOTeacherSubject {
 
             DAOHelper.subjectPerson(map, resultSet);
         } catch (SQLException e) {
-            logger.error("Error when use method viewSubjectTeacher. Message: " + e.getMessage());
+            DAOTSLOGGER.error("Error when use method viewSubjectTeacher. Message: " + e.getMessage());
         } finally {
             DAOConnection.disconnect();
         }
@@ -95,7 +95,7 @@ public class DAOTeacherSubjectImpl implements DAOTeacherSubject {
                         resultSet.getString(2), resultSet.getString(3)));
             }
         } catch (SQLException e) {
-            logger.error("Error when use method teacherSubjectSet. Message: " + e.getMessage());
+            DAOTSLOGGER.error("Error when use method teacherSubjectSet. Message: " + e.getMessage());
         } finally {
             DAOConnection.disconnect();
         }
@@ -119,7 +119,7 @@ public class DAOTeacherSubjectImpl implements DAOTeacherSubject {
             preparedStatement.setInt(2, subjectId);
             b = preparedStatement.execute();
         } catch (SQLException e) {
-            logger.error("Error when use method insertNewInfo. Message: " + e.getMessage());
+            DAOTSLOGGER.error("Error when use method insertNewInfo. Message: " + e.getMessage());
         } finally {
             DAOConnection.disconnect();
         }
@@ -143,7 +143,7 @@ public class DAOTeacherSubjectImpl implements DAOTeacherSubject {
             preparedStatement.setInt(2, subjectId);
             b = preparedStatement.execute();
         } catch (SQLException e) {
-            logger.error("Error when use method deleteInfo. Message: " + e.getMessage());
+            DAOTSLOGGER.error("Error when use method deleteInfo. Message: " + e.getMessage());
         } finally {
             DAOConnection.disconnect();
         }

@@ -5,6 +5,10 @@ import model.Person;
 import org.apache.log4j.Logger;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.sql.*;
 import java.util.LinkedList;
 import java.util.List;
@@ -14,7 +18,7 @@ import java.util.List;
  * @author Anrey Sherstyuk
  */
 public class DAOPersonImpl implements DAOPerson {
-    private Logger logger = Logger.getLogger(DAOPersonImpl.class);
+    private static final Logger DAOPLOGGER = Logger.getLogger(DAOPersonImpl.class);
     private BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
 
     private PreparedStatement preparedStatement;
@@ -40,7 +44,7 @@ public class DAOPersonImpl implements DAOPerson {
                         resultSet.getString(5)));
             }
         } catch (SQLException e) {
-            logger.error("Error when use method viewAllInformation. Message: " + e.getMessage());
+            DAOPLOGGER.error("Error when use method viewAllInformation. Message: " + e.getMessage());
         } finally {
             DAOConnection.disconnect();
         }
@@ -70,7 +74,7 @@ public class DAOPersonImpl implements DAOPerson {
                 }
             }
         } catch (SQLException e) {
-            logger.error("Error when use method validateLogin. Message: " + e.getMessage());
+            DAOPLOGGER.error("Error when use method validateLogin. Message: " + e.getMessage());
         } finally {
             DAOConnection.disconnect();
         }
@@ -101,7 +105,7 @@ public class DAOPersonImpl implements DAOPerson {
                 preparedStatement.execute();
             }
         } catch (SQLException e) {
-            logger.error("Error when use method validateRegistration. Message: " + e.getMessage());
+            DAOPLOGGER.error("Error when use method validateRegistration. Message: " + e.getMessage());
         } finally {
             DAOConnection.disconnect();
         }
@@ -132,7 +136,7 @@ public class DAOPersonImpl implements DAOPerson {
                 personList.add(new Person(resultSet.getInt(1), resultSet.getString(2)));
             }
         } catch (SQLException e) {
-            logger.error("Error when use method selectAllStudents. Message: " + e.getMessage());
+            DAOPLOGGER.error("Error when use method selectAllStudents. Message: " + e.getMessage());
         } finally {
             DAOConnection.disconnect();
         }
@@ -165,7 +169,7 @@ public class DAOPersonImpl implements DAOPerson {
 
             b = resultSet.next();
         } catch (SQLException e) {
-            logger.error("Error when use method personInfo. Message: " + e.getMessage());
+            DAOPLOGGER.error("Error when use method personInfo. Message: " + e.getMessage());
         } finally {
             DAOConnection.disconnect();
         }
@@ -187,7 +191,7 @@ public class DAOPersonImpl implements DAOPerson {
                 list.add(new Person(resultSet.getInt(1), resultSet.getString(2)));
             }
         } catch (SQLException e) {
-            logger.error("Error when use method viewAllStudents. Message: " + e.getMessage());
+            DAOPLOGGER.error("Error when use method viewAllStudents. Message: " + e.getMessage());
         } finally {
             DAOConnection.disconnect();
         }
@@ -226,7 +230,7 @@ public class DAOPersonImpl implements DAOPerson {
             preparedStatement.setInt(1, studentId);
             preparedStatement.execute();
         } catch (SQLException e) {
-            logger.error("Error when use method updateStudent. Message: " + e.getMessage());
+            DAOPLOGGER.error("Error when use method updateStudent. Message: " + e.getMessage());
         } finally {
             DAOConnection.disconnect();
         }
@@ -246,10 +250,41 @@ public class DAOPersonImpl implements DAOPerson {
                 list.add(new Person(resultSet.getInt(1), resultSet.getString(2)));
             }
         } catch (SQLException e) {
-            logger.error("Error when use method viewAllTeachers. Message: " + e.getMessage());
+            DAOPLOGGER.error("Error when use method viewAllTeachers. Message: " + e.getMessage());
         } finally {
             DAOConnection.disconnect();
         }
         return list;
+    }
+
+    /**
+     * Method for filling test data to database
+     */
+    public void testTables() {
+        try {
+            DAOConnection.connect();
+            statement = DAOConnection.connection.createStatement();
+            statement.executeQuery("select * from person");
+            statement.executeQuery("select * from student");
+            statement.executeQuery("select * from teacher");
+            statement.executeQuery("select * from subject");
+            statement.executeQuery("select * from task");
+            statement.executeQuery("select * from TEACHER_SUBJECT");
+            statement.executeQuery("select * from STUDENT_SUBJECT");
+            statement.executeQuery("select * from mark");
+        } catch (SQLException e) {
+            DAOPLOGGER.error("Error when use method testTables. Message: " + e.getMessage());
+            try (BufferedReader reader = new BufferedReader(new FileReader("src/resources/script.txt"))) {
+                StringBuilder buffer = new StringBuilder();
+                String str;
+                while ((str = reader.readLine()) != null)
+                    buffer.append(str);
+                statement.execute(buffer.toString());
+            } catch (IOException | SQLException e1) {
+                DAOPLOGGER.error("Error when use method testTables in second try. Message: " + e.getMessage());
+            }
+        } finally {
+            DAOConnection.disconnect();
+        }
     }
 }

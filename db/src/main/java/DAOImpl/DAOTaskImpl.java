@@ -16,7 +16,7 @@ import java.util.List;
  * @author Anrey Sherstyuk
  */
 public class DAOTaskImpl implements DAOTask {
-    Logger logger = Logger.getLogger(DAOTaskImpl.class);
+    private static final Logger DAOTLOGGER = Logger.getLogger(DAOTaskImpl.class);
 
     private PreparedStatement preparedStatement;
     private Statement statement;
@@ -45,7 +45,7 @@ public class DAOTaskImpl implements DAOTask {
                         resultSet.getDouble(4)));
             }
         } catch (SQLException e) {
-            logger.error("Error when use method viewAllTask. Message: " + e.getMessage());
+            DAOTLOGGER.error("Error when use method viewAllTask. Message: " + e.getMessage());
         } finally {
             DAOConnection.disconnect();
         }
@@ -72,7 +72,7 @@ public class DAOTaskImpl implements DAOTask {
                 task.setMax_mark(resultSet.getDouble(3));
             }
         } catch (SQLException e) {
-            logger.error("Error when use method viewTask. Message: " + e.getMessage());
+            DAOTLOGGER.error("Error when use method viewTask. Message: " + e.getMessage());
         } finally {
             DAOConnection.disconnect();
         }
@@ -96,7 +96,7 @@ public class DAOTaskImpl implements DAOTask {
             preparedStatement.setDouble(4, task.getMax_mark());
             b = preparedStatement.execute();
         } catch (SQLException e) {
-            logger.error("Error when use method insertNewTask. Message: " + e.getMessage());
+            DAOTLOGGER.error("Error when use method insertNewTask. Message: " + e.getMessage());
         } finally {
             DAOConnection.disconnect();
         }
@@ -120,7 +120,7 @@ public class DAOTaskImpl implements DAOTask {
             resultSet.next();
             subjectId = resultSet.getInt(1);
         } catch (SQLException e) {
-            logger.error("Error when use method subjectId. Message: " + e.getMessage());
+            DAOTLOGGER.error("Error when use method subjectId. Message: " + e.getMessage());
         } finally {
             DAOConnection.disconnect();
         }

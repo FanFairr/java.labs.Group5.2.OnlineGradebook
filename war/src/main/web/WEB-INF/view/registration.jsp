@@ -19,7 +19,7 @@
     Name: <input type="text" id="name"/><br/>
     Email: <input type="text" id="email"/><br/>
     ${validate}<br/>
-    <input type="button" onclick="reg()" value="Check"/>
+    <input type="button" onclick="reg()" value="Registration"/>
 </div>
 <a href="login" style="padding-left: 40%;"><button>Login</button></a>
 </body>

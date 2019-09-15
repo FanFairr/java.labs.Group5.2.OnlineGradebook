@@ -16,7 +16,7 @@ import java.util.List;
  * @author Anrey Sherstyuk
  */
 public class DAOSubjectImpl implements DAOSubject {
-    Logger logger = Logger.getLogger(DAOSubjectImpl.class);
+    private static final Logger DAOSLOGGER = Logger.getLogger(DAOSubjectImpl.class);
 
     private PreparedStatement preparedStatement;
     private Statement statement;
@@ -39,7 +39,7 @@ public class DAOSubjectImpl implements DAOSubject {
                         resultSet.getString(3)));
             }
         } catch (SQLException e) {
-            logger.error("Error when use method viewAllSubject. Message: " + e.getMessage());
+            DAOSLOGGER.error("Error when use method viewAllSubject. Message: " + e.getMessage());
         } finally {
             DAOConnection.disconnect();
         }
@@ -62,7 +62,7 @@ public class DAOSubjectImpl implements DAOSubject {
             resultSet.next();
             subject = new Subject(resultSet.getString(2), resultSet.getString(3));
         } catch (SQLException e) {
-            logger.error("Error when use method viewSubject. Message: " + e.getMessage());
+            DAOSLOGGER.error("Error when use method viewSubject. Message: " + e.getMessage());
         } finally {
             DAOConnection.disconnect();
         }
@@ -83,7 +83,7 @@ public class DAOSubjectImpl implements DAOSubject {
             preparedStatement.setString(2, subject.getContent());
             b = preparedStatement.execute();
         } catch (SQLException e) {
-            logger.error("Error when use method insertNewSubject. Message: " + e.getMessage());
+            DAOSLOGGER.error("Error when use method insertNewSubject. Message: " + e.getMessage());
         } finally {
             DAOConnection.disconnect();
         }
@@ -103,7 +103,7 @@ public class DAOSubjectImpl implements DAOSubject {
             preparedStatement.setInt(1, id);
             b = preparedStatement.execute();
         } catch (SQLException e) {
-            logger.error("Error when use method deleteSubject. Message: " + e.getMessage());
+            DAOSLOGGER.error("Error when use method deleteSubject. Message: " + e.getMessage());
         } finally {
             DAOConnection.disconnect();
         }
