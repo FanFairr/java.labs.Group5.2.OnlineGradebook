@@ -29,7 +29,6 @@ public class AuthorizationWindowController {
      */
     @RequestMapping(value = "/")
     public String index() {
-
         return Patterns.index;
     }
 
@@ -39,6 +38,7 @@ public class AuthorizationWindowController {
      */
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public ModelAndView login() {
+        personService.testTables();
         AUTHORIZATIONLOGGER.info("The user successfully completed the transition to login.");
         ModelAndView modelAndView = new ModelAndView(Patterns.login);
         modelAndView.addObject("user", new Person());

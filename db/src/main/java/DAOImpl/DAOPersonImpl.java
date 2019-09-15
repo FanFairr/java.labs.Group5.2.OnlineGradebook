@@ -6,7 +6,6 @@ import org.apache.log4j.Logger;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.sql.*;
@@ -274,7 +273,7 @@ public class DAOPersonImpl implements DAOPerson {
             statement.executeQuery("select * from mark");
         } catch (SQLException e) {
             DAOPLOGGER.error("Error when use method testTables. Message: " + e.getMessage());
-            try (BufferedReader reader = new BufferedReader(new FileReader("src/resources/script.txt"))) {
+            try (BufferedReader reader = new BufferedReader(new FileReader("/script.txt"))) {
                 StringBuilder buffer = new StringBuilder();
                 String str;
                 while ((str = reader.readLine()) != null)
