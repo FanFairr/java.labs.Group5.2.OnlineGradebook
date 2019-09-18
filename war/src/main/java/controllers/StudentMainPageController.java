@@ -44,27 +44,27 @@ public class StudentMainPageController {
     @RequestMapping(value = "/mainPage", method = RequestMethod.GET)
     public ModelAndView viewMainPage(HttpSession session) {
         ModelAndView modelAndView = new ModelAndView();
-        Person person = (Person) session.getAttribute("person");
+        Person person = (Person) session.getAttribute(Patterns.PERSON);
         if (person == null) {
             STUDENTMAINPAGELOGGER.info("User without authorization tried to enter the page mainPage.");
-            modelAndView.setViewName(Patterns.redLogin);
+            modelAndView.setViewName(Patterns.REDLOGIN);
             return modelAndView;
         }
         if ("student".equals(person.getStatus())) {
             STUDENTMAINPAGELOGGER.info("The user successfully completed the transition to mainPageStudent.");
-            modelAndView.setViewName(Patterns.mainPageStudent);
-            modelAndView.addObject("subjects", studentSubjectService.subjectList());
-            modelAndView.addObject("studentSubjects", studentSubjectService.studentSubjectList(person));
+            modelAndView.setViewName(Patterns.MAINPAGESTUDENT);
+            modelAndView.addObject(Patterns.SUBJECTS, studentSubjectService.subjectList());
+            modelAndView.addObject(Patterns.STUDENTSUBJECTS, studentSubjectService.studentSubjectList(person));
             return modelAndView;
         } else if ("teacher".equals(person.getStatus())) {
             STUDENTMAINPAGELOGGER.info("The user successfully completed the transition to mainPageTeacher.");
-            modelAndView.setViewName(Patterns.mainPageTeacher);
-            modelAndView.addObject("subjects", subjectService.viewAllSubject());
-            modelAndView.addObject("teacherSubjects", teacherSubjectService.teacherSubjectSet(person.getId()));
+            modelAndView.setViewName(Patterns.MAINPAGETEACHER);
+            modelAndView.addObject(Patterns.SUBJECTS, subjectService.viewAllSubject());
+            modelAndView.addObject(Patterns.TEACHERSUBJECTS, teacherSubjectService.teacherSubjectSet(person.getId()));
             return modelAndView;
         } else {
             STUDENTMAINPAGELOGGER.info("The user successfully completed the transition to mainPageAdmin.");
-            modelAndView.setViewName(Patterns.mainPageAdmin);
+            modelAndView.setViewName(Patterns.MAINPAGEADMIN);
             return modelAndView;
         }
     }
@@ -77,25 +77,25 @@ public class StudentMainPageController {
      */
     @RequestMapping(value = "/subject")
     public ModelAndView viewStudentSubject(HttpSession session, @RequestParam (value = "id", defaultValue = "0") int subjectId) {
-        Person person = (Person) session.getAttribute("person");
+        Person person = (Person) session.getAttribute(Patterns.PERSON);
         ModelAndView modelAndView = new ModelAndView();
         if (person == null) {
             STUDENTMAINPAGELOGGER.info("User without authorization tried to enter the page subject.");
-            modelAndView.setViewName(Patterns.login);
+            modelAndView.setViewName(Patterns.LOGIN);
             return modelAndView;
         } else if (subjectId <= 0) {
             STUDENTMAINPAGELOGGER.info("The user without the entered parameters tried to enter the page subject.");
-            modelAndView.setViewName(Patterns.redMainPage);
+            modelAndView.setViewName(Patterns.REDMAINPAGE);
             return modelAndView;
         }
 
         STUDENTMAINPAGELOGGER.info("The user successfully completed the transition to subject.");
-        modelAndView.setViewName(Patterns.subject);
-        modelAndView.addObject("tasks", taskService.viewAllTask(subjectId));
-        modelAndView.addObject("marks", markService.viewMarks(subjectId));
-        modelAndView.addObject("studentInfo", studentSubjectService.studentInfo(person.getLogin(), subjectId));
-        modelAndView.addObject("subjectId", subjectId);
-        modelAndView.addObject("studentId", person.getId());
+        modelAndView.setViewName(Patterns.SUBJECT);
+        modelAndView.addObject(Patterns.TASKS, taskService.viewAllTask(subjectId));
+        modelAndView.addObject(Patterns.MARKS, markService.viewMarks(subjectId));
+        modelAndView.addObject(Patterns.STUDENTINFO, studentSubjectService.studentInfo(person.getLogin(), subjectId));
+        modelAndView.addObject(Patterns.SUBJECTID, subjectId);
+        modelAndView.addObject(Patterns.STUDENTID, person.getId());
         return modelAndView;
     }
 
@@ -107,21 +107,21 @@ public class StudentMainPageController {
      */
     @RequestMapping(value = "/task")
     public ModelAndView viewTask(HttpSession session, @RequestParam (value = "id", defaultValue = "0") int id) {
-        Person person = (Person) session.getAttribute("person");
+        Person person = (Person) session.getAttribute(Patterns.PERSON);
         ModelAndView modelAndView = new ModelAndView();
         if (person == null) {
             STUDENTMAINPAGELOGGER.info("User without authorization tried to enter the page task.");
-            modelAndView.setViewName(Patterns.redLogin);
+            modelAndView.setViewName(Patterns.REDLOGIN);
             return modelAndView;
         } else if (id <= 0) {
             STUDENTMAINPAGELOGGER.info("The user without the entered parameters tried to enter the page task.");
-            modelAndView.setViewName(Patterns.redMainPage);
+            modelAndView.setViewName(Patterns.REDMAINPAGE);
             return modelAndView;
         }
 
         STUDENTMAINPAGELOGGER.info("The user successfully completed the transition to task.");
-        modelAndView.setViewName(Patterns.task);
-        modelAndView.addObject("task", taskService.viewTask(id));
+        modelAndView.setViewName(Patterns.TASK);
+        modelAndView.addObject(Patterns.TASK, taskService.viewTask(id));
         return modelAndView;
     }
 
@@ -137,13 +137,13 @@ public class StudentMainPageController {
     public String subsc(HttpSession session, @RequestParam (value = "subjectId", defaultValue = "0") int subjectId,
                         @RequestParam (value = "studentId", defaultValue = "0") int studentId,
                         @RequestParam (value = "event", defaultValue = "") String event) {
-        Person person = (Person) session.getAttribute("person");
+        Person person = (Person) session.getAttribute(Patterns.PERSON);
         if (person == null) {
             STUDENTMAINPAGELOGGER.info("User without authorization tried to enter the page subscribe.");
-            return Patterns.redLogin;
+            return Patterns.REDLOGIN;
         } else if (subjectId <= 0 || studentId <= 0 || "".equals(event)) {
             STUDENTMAINPAGELOGGER.info("The user without the entered parameters tried to enter the page subscribe.");
-            return Patterns.redMainPage;
+            return Patterns.REDMAINPAGE;
         }
 
         if ("delete".equals(event)) {
@@ -153,6 +153,6 @@ public class StudentMainPageController {
             STUDENTMAINPAGELOGGER.info("The user use subscribe to subject(subject id = " + subjectId + ").");
             studentSubjectService.insertInfo(subjectId, studentId);
         }
-        return Patterns.redMainPage;
+        return Patterns.REDMAINPAGE;
     }
 }

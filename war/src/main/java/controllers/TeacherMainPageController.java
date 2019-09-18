@@ -41,23 +41,23 @@ public class TeacherMainPageController {
      */
     @RequestMapping(value = "/teacherTask")
     public ModelAndView teacherTask(HttpSession session, @RequestParam(value = "id", defaultValue = "0") int id) {
-        Person person = (Person) session.getAttribute("person");
+        Person person = (Person) session.getAttribute(Patterns.PERSON);
         ModelAndView modelAndView = new ModelAndView();
         if (person == null) {
             TEACHERMAINPAGELOGGER.info("User without authorization tried to enter the page teacherTask.");
-            modelAndView.setViewName(Patterns.redLogin);
+            modelAndView.setViewName(Patterns.REDLOGIN);
             return modelAndView;
         } else if (id <= 0) {
             TEACHERMAINPAGELOGGER.info("The user without the entered parameters tried to enter the page teacherTask.");
-            modelAndView.setViewName(Patterns.redMainPage);
+            modelAndView.setViewName(Patterns.REDMAINPAGE);
             return modelAndView;
         }
 
         TEACHERMAINPAGELOGGER.info("The user successfully completed the transition to teacherTask.");
-        modelAndView.setViewName(Patterns.task);
-        modelAndView.addObject("task", taskService.viewTask(id));
-        modelAndView.addObject("students", personService.selectAllStudents(id));
-        modelAndView.addObject("personInfo", personService.personInfo(person.getId(), id));
+        modelAndView.setViewName(Patterns.TASK);
+        modelAndView.addObject(Patterns.TASK, taskService.viewTask(id));
+        modelAndView.addObject(Patterns.STUDENTS, personService.selectAllStudents(id));
+        modelAndView.addObject(Patterns.PERSONINFO, personService.personInfo(person.getId(), id));
         return modelAndView;
     }
 
@@ -75,21 +75,21 @@ public class TeacherMainPageController {
                                     @RequestParam(value = "mark", defaultValue = "0") double mark,
                                     @RequestParam(value = "teacherId", defaultValue = "0") int teacherId,
                                     @RequestParam(value = "taskId", defaultValue = "0") int taskId) {
-        Person person = (Person) session.getAttribute("person");
+        Person person = (Person) session.getAttribute(Patterns.PERSON);
         ModelAndView modelAndView = new ModelAndView();
         if (person == null) {
             TEACHERMAINPAGELOGGER.info("User without authorization tried to enter the page mark.");
-            modelAndView.setViewName(Patterns.redLogin);
+            modelAndView.setViewName(Patterns.REDLOGIN);
             return modelAndView;
         } else if (studentId <= 0 || mark <= 0 || teacherId <= 0 || taskId <= 0) {
             TEACHERMAINPAGELOGGER.info("The user without the entered parameters tried to enter the page mark.");
-            modelAndView.setViewName(Patterns.redMainPage);
+            modelAndView.setViewName(Patterns.REDMAINPAGE);
             return modelAndView;
         }
 
         TEACHERMAINPAGELOGGER.info("The user successfully completed the transition to mark.");
         markService.updateMark(taskId, studentId, teacherId, mark);
-        modelAndView.setViewName(Patterns.redSubject + taskService.subjectId(taskId));
+        modelAndView.setViewName(Patterns.REDSUBJECT + taskService.subjectId(taskId));
         return modelAndView;
     }
 }

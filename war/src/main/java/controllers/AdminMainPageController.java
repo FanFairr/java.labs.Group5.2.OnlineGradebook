@@ -47,17 +47,17 @@ public class AdminMainPageController {
     @RequestMapping(value = "addTeacher")
     public ModelAndView addTeacher(HttpSession session) {
         ModelAndView modelAndView = new ModelAndView();
-        Person person = (Person) session.getAttribute("person");
+        Person person = (Person) session.getAttribute(Patterns.PERSON);
         if (person == null) {
             ADMINPAGELOGGER.info("User without authorization tried to enter the page addTeacher.");
-            modelAndView.setViewName(Patterns.redLogin);
+            modelAndView.setViewName(Patterns.REDLOGIN);
             return modelAndView;
         }
 
         ADMINPAGELOGGER.info("The user successfully completed the transition to addTeacher.");
-        modelAndView.setViewName(Patterns.adminOption);
-        modelAndView.addObject("students", personService.viewAllStudent());
-        modelAndView.addObject("option", "addTeacher");
+        modelAndView.setViewName(Patterns.ADMINOPTION);
+        modelAndView.addObject(Patterns.STUDENTS, personService.viewAllStudent());
+        modelAndView.addObject(Patterns.OPTION, "addTeacher");
         return modelAndView;
     }
 
@@ -69,18 +69,18 @@ public class AdminMainPageController {
      */
     @RequestMapping(value = "newTeacher")
     public String newTeacher(HttpSession session, @RequestParam(value = "studentId", defaultValue = "0") int studentId) {
-        Person person = (Person) session.getAttribute("person");
+        Person person = (Person) session.getAttribute(Patterns.PERSON);
         if (person == null) {
             ADMINPAGELOGGER.info("User without authorization tried to enter the page newTeacher.");
-            return Patterns.redLogin;
+            return Patterns.REDLOGIN;
         } else if (studentId <= 0) {
             ADMINPAGELOGGER.info("The user without the entered parameters tried to enter the page newTeacher.");
-            return Patterns.redMainPage;
+            return Patterns.REDMAINPAGE;
         }
 
         ADMINPAGELOGGER.info("The user successfully completed the transition to addTeacher.");
         personService.updateStudent(studentId);
-        return Patterns.redMainPage;
+        return Patterns.REDMAINPAGE;
     }
 
     /**
@@ -91,18 +91,18 @@ public class AdminMainPageController {
     @RequestMapping(value = "addSubjectForTeacher")
     public ModelAndView addSubjectForTeacher(HttpSession session) {
         ModelAndView modelAndView = new ModelAndView();
-        Person person = (Person) session.getAttribute("person");
+        Person person = (Person) session.getAttribute(Patterns.PERSON);
         if (person == null) {
             ADMINPAGELOGGER.info("User without authorization tried to enter the page addSubjectForTeacher.");
-            modelAndView.setViewName(Patterns.redLogin);
+            modelAndView.setViewName(Patterns.REDLOGIN);
             return modelAndView;
         }
 
         ADMINPAGELOGGER.info("The user successfully completed the transition to addSubjectForTeacher.");
-        modelAndView.setViewName(Patterns.adminOption);
-        modelAndView.addObject("teachers", personService.viewAllTeachers());
-        modelAndView.addObject("subjects", subjectService.viewAllSubject());
-        modelAndView.addObject("option", "addSubjectForTeacher");
+        modelAndView.setViewName(Patterns.ADMINOPTION);
+        modelAndView.addObject(Patterns.TEACHERS, personService.viewAllTeachers());
+        modelAndView.addObject(Patterns.SUBJECTS, subjectService.viewAllSubject());
+        modelAndView.addObject(Patterns.OPTION, "addSubjectForTeacher");
         return modelAndView;
     }
 
@@ -116,18 +116,18 @@ public class AdminMainPageController {
     @RequestMapping(value = "newTeacherForSubject")
     public String newTeacherForSubject(HttpSession session, @RequestParam(value = "teacherId", defaultValue = "0") int teacherId,
                                        @RequestParam(value = "subjectId", defaultValue = "0") int subjectId) {
-        Person person = (Person) session.getAttribute("person");
+        Person person = (Person) session.getAttribute(Patterns.PERSON);
         if (person == null) {
             ADMINPAGELOGGER.info("User without authorization tried to enter the page newTeacherForSubject.");
-            return Patterns.redLogin;
+            return Patterns.REDLOGIN;
         } else if (teacherId <= 0 || subjectId <= 0) {
             ADMINPAGELOGGER.info("The user without the entered parameters tried to enter the page newTeacherForSubject.");
-            return Patterns.redMainPage;
+            return Patterns.REDMAINPAGE;
         }
 
         ADMINPAGELOGGER.info("The user successfully completed the transition to newTeacherForSubject.");
         teacherSubjectService.insertNewInfo(teacherId, subjectId);
-        return Patterns.redMainPage;
+        return Patterns.REDMAINPAGE;
     }
 
     /**
@@ -138,16 +138,16 @@ public class AdminMainPageController {
     @RequestMapping(value = "addSubject")
     public ModelAndView newSubject(HttpSession session) {
         ModelAndView modelAndView = new ModelAndView();
-        Person person = (Person) session.getAttribute("person");
+        Person person = (Person) session.getAttribute(Patterns.PERSON);
         if (person == null) {
             ADMINPAGELOGGER.info("User without authorization tried to enter the page addSubject.");
-            modelAndView.setViewName(Patterns.redLogin);
+            modelAndView.setViewName(Patterns.REDLOGIN);
             return modelAndView;
         }
 
         ADMINPAGELOGGER.info("The user successfully completed the transition to addSubject.");
-        modelAndView.setViewName(Patterns.adminOption);
-        modelAndView.addObject("option", "addSubject");
+        modelAndView.setViewName(Patterns.ADMINOPTION);
+        modelAndView.addObject(Patterns.OPTION, "addSubject");
         return modelAndView;
     }
 
@@ -161,18 +161,18 @@ public class AdminMainPageController {
     @RequestMapping(value = "newSubject")
     public String newSubject(HttpSession session, @RequestParam(value = "subjectName", defaultValue = "") String subjectName,
                                        @RequestParam(value = "subjectContent", defaultValue = "") String subjectContent) {
-        Person person = (Person) session.getAttribute("person");
+        Person person = (Person) session.getAttribute(Patterns.PERSON);
         if (person == null) {
             ADMINPAGELOGGER.info("User without authorization tried to enter the page newSubject.");
-            return Patterns.login;
+            return Patterns.LOGIN;
         } else if ("".equals(subjectName) || "".equals(subjectContent)) {
             ADMINPAGELOGGER.info("The user without the entered parameters tried to enter the page newSubject.");
-            return Patterns.redMainPage;
+            return Patterns.REDMAINPAGE;
         }
 
         ADMINPAGELOGGER.info("The user successfully completed the transition to newSubject.");
         subjectService.insertNewSubject(new Subject(subjectName, subjectContent));
-        return Patterns.redMainPage;
+        return Patterns.REDMAINPAGE;
     }
 
     /**
@@ -183,17 +183,17 @@ public class AdminMainPageController {
     @RequestMapping(value = "addTask")
     public ModelAndView addTask(HttpSession session) {
         ModelAndView modelAndView = new ModelAndView();
-        Person person = (Person) session.getAttribute("person");
+        Person person = (Person) session.getAttribute(Patterns.PERSON);
         if (person == null) {
             ADMINPAGELOGGER.info("User without authorization tried to enter the page addTask.");
-            modelAndView.setViewName(Patterns.login);
+            modelAndView.setViewName(Patterns.LOGIN);
             return modelAndView;
         }
 
         ADMINPAGELOGGER.info("The user successfully completed the transition to addTask.");
-        modelAndView.setViewName(Patterns.adminOption);
-        modelAndView.addObject("subjects", subjectService.viewAllSubject());
-        modelAndView.addObject("option", "addTask");
+        modelAndView.setViewName(Patterns.ADMINOPTION);
+        modelAndView.addObject(Patterns.SUBJECTS, subjectService.viewAllSubject());
+        modelAndView.addObject(Patterns.OPTION, "addTask");
         return modelAndView;
     }
 
@@ -212,17 +212,17 @@ public class AdminMainPageController {
                           @RequestParam(value = "taskName", defaultValue = "") String taskName,
                           @RequestParam(value = "taskContent", defaultValue = "") String taskContent,
                           @RequestParam(value = "maxMark", defaultValue = "0") double maxMark) {
-        Person person = (Person) session.getAttribute("person");
+        Person person = (Person) session.getAttribute(Patterns.PERSON);
         if (person == null) {
             ADMINPAGELOGGER.info("User without authorization tried to enter the page newTask.");
-            return Patterns.login;
+            return Patterns.LOGIN;
         } else if ("".equals(subjectName) || "".equals(taskName) || "".equals(taskContent) || maxMark <= 0) {
             ADMINPAGELOGGER.info("The user without the entered parameters tried to enter the page newTask.");
-            return Patterns.redMainPage;
+            return Patterns.REDMAINPAGE;
         }
 
         ADMINPAGELOGGER.info("The user successfully completed the transition to newTask.");
         taskService.insertNewTask(new Task(subjectName, taskName, taskContent, maxMark));
-        return Patterns.redMainPage;
+        return Patterns.REDMAINPAGE;
     }
 }
