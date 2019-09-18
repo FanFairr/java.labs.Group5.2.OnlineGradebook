@@ -1,6 +1,7 @@
 package DAOImpl;
 
 import DAO.DAOPerson;
+import model.Patterns;
 import model.Person;
 import org.apache.log4j.Logger;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -273,14 +274,14 @@ public class DAOPersonImpl implements DAOPerson {
             statement.executeQuery("select * from mark");
         } catch (SQLException e) {
             DAOPLOGGER.error("Error when use method testTables. Message: " + e.getMessage());
-            try (BufferedReader reader = new BufferedReader(new FileReader("/script.txt"))) {
-                StringBuilder buffer = new StringBuilder();
-                String str;
-                while ((str = reader.readLine()) != null)
-                    buffer.append(str);
-                statement.execute(buffer.toString());
-            } catch (IOException | SQLException e1) {
-                DAOPLOGGER.error("Error when use method testTables in second try. Message: " + e.getMessage());
+            try {
+                statement.execute(Patterns.firstRequest);
+                statement.execute(Patterns.secondRequest);
+                statement.execute(Patterns.thirdRequest);
+                for (String request : Patterns.insertList)
+                    statement.execute(request);
+            } catch (SQLException e1) {
+                DAOPLOGGER.error("Error when use method testTables in second try. Message: " + e1.getMessage());
             }
         } finally {
             DAOConnection.disconnect();
