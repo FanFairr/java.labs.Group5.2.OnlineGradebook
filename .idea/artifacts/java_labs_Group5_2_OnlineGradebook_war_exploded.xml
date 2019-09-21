@@ -7,9 +7,7 @@
         <element id="directory" name="classes">
           <element id="module-output" name="java.labs.Group5.2.OnlineGradebook" />
         </element>
-        <element id="directory" name="lib">
-          <element id="library" level="project" name="ojdbc6" />
-        </element>
+        <element id="directory" name="lib" />
       </element>
       <element id="library" level="project" name="Maven: javax.servlet:javax.servlet-api:3.1.0" />
     </root>
