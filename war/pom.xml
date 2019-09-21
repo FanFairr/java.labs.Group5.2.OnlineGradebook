@@ -49,10 +49,6 @@
                     <warSourceDirectory>${basedir}/src/main/web</warSourceDirectory>
                     <failOnMissingWebXml>false</failOnMissingWebXml>
                 </configuration>
-                <!--<configuration>
-                    <webappDirectory>${project.build.directory}/${project.artifactId}.${project.packaging}</webappDirectory>
-                    <failOnMissingWebXml>false</failOnMissingWebXml>
-                </configuration>-->
             </plugin>
         </plugins>
     </build>

@@ -39,7 +39,56 @@
                     <failOnMissingWebXml>false</failOnMissingWebXml>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>sql-maven-plugin</artifactId>
+                <version>1.5</version>
+
+                <dependencies>
+                    <dependency>
+                        <groupId>com.oracle</groupId>
+                        <artifactId>ojdbc</artifactId>
+                        <version>6</version>
+                        <scope>system</scope>
+                        <systemPath>${basedir}/src/main/resources/ojdbc6.jar</systemPath>
+                    </dependency>
+                </dependencies>
+
+                <configuration>
+                    <driver>oracle.jdbc.driver.OracleDriver</driver>
+                    <url>jdbc:oracle:thin:@localhost:1521:Druce</url>
+                    <username>system</username>
+                    <password>191195</password>
+                </configuration>
+
+                <executions>
+                    <execution>
+                        <id>checkTables</id>
+                        <phase>process-test-resources</phase>
+                        <goals>
+                            <goal>execute</goal>
+                        </goals>
+                        <configuration>
+                            <autocommit>true</autocommit>
+                            <delimiterType>row</delimiterType>
+                            <srcFiles>
+                                <srcFile>${basedir}/src/main/resources/insertScript.sql</srcFile>
+                            </srcFiles>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
         </plugins>
     </build>
 
+    <dependencies>
+        <dependency>
+            <groupId>com.oracle</groupId>
+            <artifactId>ojdbc</artifactId>
+            <version>6</version>
+            <scope>system</scope>
+            <systemPath>${basedir}/src/main/resources/ojdbc6.jar</systemPath>
+        </dependency>
+    </dependencies>
 </project>

@@ -257,34 +257,4 @@ public class DAOPersonImpl implements DAOPerson {
         return list;
     }
 
-    /**
-     * Method for filling test data to database
-     */
-    public void testTables() {
-        try {
-            DAOConnection.connect();
-            statement = DAOConnection.connection.createStatement();
-            statement.executeQuery("select * from person");
-            statement.executeQuery("select * from student");
-            statement.executeQuery("select * from teacher");
-            statement.executeQuery("select * from subject");
-            statement.executeQuery("select * from task");
-            statement.executeQuery("select * from TEACHER_SUBJECT");
-            statement.executeQuery("select * from STUDENT_SUBJECT");
-            statement.executeQuery("select * from mark");
-        } catch (SQLException e) {
-            DAOPLOGGER.error("Error when use method testTables. Message: " + e.getMessage());
-            try {
-                statement.execute(Patterns.firstRequest);
-                statement.execute(Patterns.secondRequest);
-                statement.execute(Patterns.thirdRequest);
-                for (String request : Patterns.insertList)
-                    statement.execute(request);
-            } catch (SQLException e1) {
-                DAOPLOGGER.error("Error when use method testTables in second try. Message: " + e1.getMessage());
-            }
-        } finally {
-            DAOConnection.disconnect();
-        }
-    }
 }

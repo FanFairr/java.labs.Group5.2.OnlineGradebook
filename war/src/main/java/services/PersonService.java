@@ -61,8 +61,4 @@ public interface PersonService {
      */
     void updateStudent(int studentId);
 
-    /**
-     * Method for testing tables.
-     */
-    void testTables();
 }

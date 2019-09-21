@@ -86,8 +86,4 @@ public class PersonServiceImpl implements PersonService {
         daoPerson.updateStudent(studentId);
     }
 
-    @Override
-    public void testTables() {
-        daoPerson.testTables();
-    }
 }

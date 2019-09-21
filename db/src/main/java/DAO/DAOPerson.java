@@ -68,8 +68,4 @@ public interface DAOPerson {
      */
     List<Person> viewAllTeachers();
 
-    /**
-     * Method for testing tables.
-     */
-    void testTables();
 }

@@ -25,20 +25,11 @@ public class AuthorizationWindowController {
     PersonService personService;
 
     /**
-     * Method for opening index page with the possible filling of the database.
-     */
-    @RequestMapping(value = "/")
-    public String index() {
-        return Patterns.INDEX;
-    }
-
-    /**
      * Method for opening login page.
      * @return login page with person object
      */
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public ModelAndView login() {
-        personService.testTables();
         AUTHORIZATIONLOGGER.info("The user successfully completed the transition to login.");
         ModelAndView modelAndView = new ModelAndView(Patterns.LOGIN);
         modelAndView.addObject(Patterns.USER, new Person());

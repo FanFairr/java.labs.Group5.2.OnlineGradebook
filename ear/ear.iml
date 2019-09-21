@@ -33,14 +33,5 @@
     <orderEntry type="library" name="Maven: org.springframework.security:spring-security-crypto:5.1.6.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.springframework.session:spring-session:1.0.0.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: log4j:log4j:1.2.17" level="project" />
-    <orderEntry type="module-library">
-      <library name="Maven: com.oracle:ojdbc:6">
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/db/src/main/resources/ojdbc6.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
   </component>
 </module>
